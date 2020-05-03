@@ -1,9 +1,31 @@
-<div class="flex-container main">
-    <div class="profilename">
-        <span>Shah Keyur Rajeshkumar</span>
+<mat-card class="card-margin">
+    <div class="flex-container main">
+        <div class="profilename">
+            <span>Shah Keyur Rajeshkumar</span>
+        </div>
+        <div class="unique-id">
+            <span>UNIQUE-ID:TEST-1121</span>
+            <!-- <br><span>Please Note Your Unique ID</span> -->
+        </div>
+        <mat-list>
+            <div *ngFor="let item of profileDetailsKeys; let i = index">
+                <div style="display: flex;width: 100vh;">
+                    <div class="mat-list-item mat-focus-indicator float-right">
+                        <div class="mat-list-item-content">
+                            {{item}}
+                        </div>
+                    </div>
+                    <div class="mat-list-item mat-focus-indicator float-right">
+                        <div class="mat-list-item-content float-right">
+                            {{profileDetails[item]}}
+                        </div>
+                    </div>
+                </div>
+                <mat-divider [inset]="true"></mat-divider>
+            </div>
+        </mat-list>
+        <div>
+            Shree Param Aanand Jain Sangh
+        </div>
     </div>
-    <div class="unique-id">
-        <span>UNIQUE-ID:TEST-1121</span>
-        <!-- <br><span>Please Note Your Unique ID</span> -->
-    </div>
-</div>
+</mat-card>

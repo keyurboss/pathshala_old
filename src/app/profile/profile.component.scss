@@ -1,14 +1,30 @@
-.profilename{
-    FONT-SIZE: 22px;
-    margin: 2vh;
+.profilename {
+  font-size: 22px;
+  margin: 2vh;
 }
-.unique-id{
-    margin: 1vh;
-    color: green;
-    font-weight: bold;
-    font-size: 18px;
+.unique-id {
+  margin: 1vh;
+  color: green;
+  font-weight: bold;
+  font-size: 18px;
 }
-.main{
-    flex-direction: column;
-    align-items: center;
+.main {
+  flex-direction: column;
+  align-items: center;
+}
+.card-margin {
+  margin: 1vh;
+}
+.float {
+  &-right {
+    float: right;
+  }
+  &-left {
+    float: left;
+  }
+}
+.example-fill-remaining-space {
+  /* This fills the remaining space, by using flexbox. 
+       Every toolbar row uses a flexbox row layout. */
+  flex: 1 1 auto;
 }
