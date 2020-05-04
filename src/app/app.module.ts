@@ -10,7 +10,6 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatListModule} from '@angular/material/list';
 import {Routes} from './app.route';
 import { TabsComponent } from './tabs/tabs.component';
-import { from } from 'rxjs';
 @NgModule({
   declarations: [
     AppComponent,

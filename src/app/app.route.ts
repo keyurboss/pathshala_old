@@ -14,6 +14,9 @@ const state = [
 	  component: LostPagesComponent,
   }
 ];
+const loginCheck = function(){
+	
+}
 const defaultConfigFun = function (router: UIRouter, injector: Injector){
 	router.urlService.rules.initial({ state: "home" });
 	router.urlService.rules.otherwise({state:"404"});
