@@ -4,9 +4,10 @@ export function logincheck(transition : Transition,state:StateService){
     console.log("executed");
     console.log(transition);
     return new Promise((resolve,reject)=>{
-        setTimeout(()=>{
-            reject();
-            state.go('404');
-        },5000);
+        resolve();
+        // setTimeout(()=>{
+        //     reject();
+        //     state.go('404');
+        // },5000);
     });
 }
