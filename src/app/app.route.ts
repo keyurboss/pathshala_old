@@ -1,12 +1,21 @@
-import { UIRouterModule,UIRouter } from '@uirouter/angular';
+import { UIRouterModule,UIRouter, Transition, StateService } from '@uirouter/angular';
 import { LostPagesComponent } from './lost-pages/lost-pages.component';
 import { TabsComponent } from './tabs/tabs.component';
 import { Injector } from '@angular/core';
+import {logincheck} from './resolveFun';
+import { from } from 'rxjs';
 const state = [
   {
     name: 'home',
     url: '/home',
-    component: TabsComponent,
+	component: TabsComponent,
+	resolve:[
+		{
+			token: "person",
+			deps: [Transition,StateService],
+			resolveFn: logincheck
+		  }
+	]
   },
   {
 	  name:'404',
@@ -14,9 +23,6 @@ const state = [
 	  component: LostPagesComponent,
   }
 ];
-const loginCheck = function(){
-	
-}
 const defaultConfigFun = function (router: UIRouter, injector: Injector){
 	router.urlService.rules.initial({ state: "home" });
 	router.urlService.rules.otherwise({state:"404"});
