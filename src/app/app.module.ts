@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import {HttpClientModule} from '@angular/common/http';
 import { NgModule ,CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -19,6 +20,7 @@ import { TabsComponent } from './tabs/tabs.component';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     Routes,
     BrowserAnimationsModule,
     MatTabsModule,
@@ -27,7 +29,9 @@ import { TabsComponent } from './tabs/tabs.component';
     MatCardModule
   ],
   schemas:[CUSTOM_ELEMENTS_SCHEMA],
-  providers: [],
+  providers: [
+    { provide: Window, useValue: window }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

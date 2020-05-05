@@ -2,6 +2,7 @@ import { UIRouterModule,UIRouter, Transition, StateService } from '@uirouter/ang
 import { LostPagesComponent } from './lost-pages/lost-pages.component';
 import { TabsComponent } from './tabs/tabs.component';
 import { Injector } from '@angular/core';
+import {BasicFunctionsService} from './services/basic-functions.service';
 import {logincheck} from './resolveFun';
 import { from } from 'rxjs';
 const state = [
@@ -12,7 +13,7 @@ const state = [
 	resolve:[
 		{
 			token: "person",
-			deps: [Transition,StateService],
+			deps: [Transition,StateService,BasicFunctionsService],
 			resolveFn: logincheck
 		  }
 	]
