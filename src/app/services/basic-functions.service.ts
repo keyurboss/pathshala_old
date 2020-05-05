@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Variables} from '../variables';
 import {HttpClient,HttpHeaders} from '@angular/common/http';
-import { from } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -13,7 +12,15 @@ export class BasicFunctionsService {
     this.window['demo'] = this;
   }
   isLogin(){
-    console.log("method Callef");
-    this.http.post("test",{});
+    return new Promise((resolve,reject)=>{
+      let token = localStorage.getItem('token');
+      if(token && token !== null){
+        this.http.get(this.appVariables.getApiUrl()+"/islogin")
+                  .subscribe(console.log,console.log);
+        // console.log(a);
+      }else{
+        // reject();
+      }
+    });
   }
 }

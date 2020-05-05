@@ -161,6 +161,11 @@ loginRouter.post("/refreshaceesstoken", (req, res) => {
   }
 });
 router.use(authenticateToken);
+router.all('/islogin',(req,res)=>{
+  res.send({
+    success:1
+  });
+});
 router.post("/mydetails", (req, res) => {
   res.send(req.user);
 });
