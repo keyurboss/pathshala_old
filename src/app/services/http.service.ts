@@ -20,7 +20,7 @@ export class HttpService {
   private http(url, params = {}) {
     return this.httpclient.post(url, params);
   }
-  getApiHttp(url:String, params = {}) {
+  getApiHttp(url:String, params = {}):Promise<any> {
     return new Promise((resolve, reject) => {
       this.http(this.apiUrl+url, params).subscribe(
         (response) => {
@@ -36,12 +36,12 @@ export class HttpService {
       );
     });
   }
-  getLoginHttp(url:String, params = {}) {
+  getLoginHttp(url:String, params = {}):Promise<any> {
     return new Promise((resolve, reject) => {
       this.http(this.loginUrl+url, params).subscribe(resolve,reject);
     });
   }
-  refreshToken() {
+  refreshToken():Promise<any> {
     return new Promise((resolve, reject) => {
       let a = localStorage.getItem('refreshToken');
       if(a && a !== null && typeof a !== 'undefined'){

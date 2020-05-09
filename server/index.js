@@ -167,7 +167,7 @@ router.all('/islogin',(req,res)=>{
   });
 });
 router.post("/mydetails", (req, res) => {
-  res.send(req.user);
+  res.send({success:1,data:req.user});
 });
 app.listen(process.env.PORT || 3000, () => {
   console.log(`App Started on PORT ${process.env.PORT || 3000}`);
