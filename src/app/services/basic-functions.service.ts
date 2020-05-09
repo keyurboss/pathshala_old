@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import {Variables} from '../variables';
 import {HttpClient,HttpHeaders} from '@angular/common/http';
+import {HttpService} from  './http.service';
+import { from } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
 export class BasicFunctionsService {
   area = "asdasd";
   private appVariables:Variables;
-  constructor(private http : HttpClient,private window: Window) {
+  constructor(private http : HttpClient,private window: Window,hhh :HttpService) {
     this.appVariables = new Variables();
     this.window['demo'] = this;
   }
