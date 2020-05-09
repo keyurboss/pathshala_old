@@ -20,7 +20,7 @@ const state = [
   },
   {
 	  name:'404',
-	  url:'lostPgae',
+	  url:'/lostPgae',
 	  component: LostPagesComponent,
   }
 ];

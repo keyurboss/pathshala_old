@@ -102,8 +102,8 @@ const addRefreshTokenandMakeEntry = function (user, token) {
   });
 };
 app.use("/api", router);
-app.use('/test',(req,res)=>{
-  res.send('suceess');
+app.use('/test',authenticateToken,(req,res)=>{
+  res.send({data:"success"});
 });
 app.use("/loginserver", loginRouter);
 loginRouter.post("/login", (req, res) => {

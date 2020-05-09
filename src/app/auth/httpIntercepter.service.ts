@@ -19,6 +19,6 @@ export class TokenInterceptor implements HttpInterceptor {
     return next.handle(request);
   }
   getToken(): string {
-    return localStorage.getItem('token');
+    return localStorage.getItem('accessToken');
   }
 }
