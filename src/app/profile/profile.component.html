@@ -3,8 +3,8 @@
     <div class="profilename">
       <span>Shah Keyur Rajeshkumar</span>
     </div>
-    <div class="unique-id">
-      <span>UNIQUE-ID:TEST-1121</span>
+    <div *ngIf="userExtraDetails.unique_id" class="unique-id">
+      <span>UNIQUE-ID:{{userExtraDetails.unique_id}}</span>
       <!-- <br><span>Please Note Your Unique ID</span> -->
     </div>
     <mat-list style="width: 100%;">
@@ -35,7 +35,12 @@
       For More Details Contant On
     </div>
     <div class="full-width">
-      <a mat-raised-button href="https://wa.me/919428393489?text=Pranam%20Keyur" target="_blank" style="background-color: #4fce5d;">
+      <a
+        mat-raised-button
+        href="https://wa.me/919428393489?text=Pranam%20Keyur"
+        target="_blank"
+        style="background-color: #4fce5d;"
+      >
         <div class="mat-button-wrapper">
           <div class="flex-container">
             <div class="whatspp-icon-size whatspp-icon">

@@ -65,6 +65,7 @@ const gerUserDetails = function (params) {
   return new Promise((resolve, reject) => {
     pool.get_connection((db) => {
       db.select([
+        "us.unique_id",
         "ub.name",
         "ub.gender",
         "ub.mobile_no",
@@ -72,11 +73,11 @@ const gerUserDetails = function (params) {
         "ub.city",
         "ub.other as user_data",
         "sd.sangh_name",
-      ]).from("user_basic as ub");
+      ]).from("user_basic as ub").join("users as us", "us.user_id = ub.user_id", "left");
+      
       if (params.id && params.password) {
         db.where("us.unique_id", params.id)
           .where("us.password", params.password)
-          .join("users as us", "us.user_id = ub.user_id", "left");
       }
       if (params.user_id) {
         db.where("ub,user_id", params.user_id);

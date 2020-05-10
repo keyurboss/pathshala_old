@@ -1,14 +1,24 @@
-<div class="example-container">
-  <mat-form-field hintLabel="Max 10 characters"  appearance="outline">
-    <mat-label>Enter your password</mat-label>
+<div class="flex-container">
+    <h1>Login To Your Account</h1>
+  <mat-form-field hintLabel="User Id Here" appearance="outline">
+    <mat-label>User ID</mat-label>
     <input
-      matInput 
+      matInput
+      [(ngModel)]="user_id"
+      maxlength="10"
+      placeholder="Password"
+    />
+  </mat-form-field>
+  <mat-form-field hintLabel="Max 10 characters" appearance="outline">
+    <mat-label>Password</mat-label>
+    <input
+      matInput
       [type]="hide ? 'password' : 'text'"
       [(ngModel)]="password"
       maxlength="10"
       placeholder="Password"
     />
-    <mat-hint align="end">{{password?.length || 0}}/10</mat-hint>
+    <mat-hint align="end">{{ password?.length || 0 }}/10</mat-hint>
     <button
       mat-icon-button
       matSuffix
@@ -19,4 +29,13 @@
       <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
     </button>
   </mat-form-field>
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="waiting"
+    (click)="login()"
+    data-style="zoom-out"
+  >
+    Primary
+  </button>
 </div>

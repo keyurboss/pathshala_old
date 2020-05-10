@@ -7,7 +7,7 @@ import { BasicFunctionsService } from '../services/basic-functions.service';
 })
 export class ProfileComponent implements OnInit {
   profileDetails;
-  userExtraDetails;
+  userExtraDetails=[];
   profileDetailsKeys=[];
   constructor(private basicFunction : BasicFunctionsService) { 
   }
@@ -17,6 +17,7 @@ export class ProfileComponent implements OnInit {
       delete profile['extra'];
       this.profileDetails = profile;
       this.profileDetailsKeys = Object.keys(this.profileDetails);
+      console.log(this);
     });
   }
 

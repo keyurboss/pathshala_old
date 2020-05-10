@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
+import Swal from 'sweetalert2';
 @Injectable({
     providedIn: 'root'
 })
@@ -28,4 +29,7 @@ export class Variables {
     getLoginUrl():String{
         return this.baseUrl+"/loginserver";
     }
+}
+export class GlobalVariables {
+    public static swal = Swal;
 }
