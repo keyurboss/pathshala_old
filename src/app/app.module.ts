@@ -10,6 +10,7 @@ import { LostPagesComponent } from './lost-pages/lost-pages.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
+import {MatButtonModule} from '@angular/material/button';
 import { Routes } from './app.route';
 import { TabsComponent } from './tabs/tabs.component';
 import { from } from 'rxjs';
@@ -27,6 +28,7 @@ import { from } from 'rxjs';
     Routes,
     MatTabsModule,
     MatDividerModule,
+    MatButtonModule,
     MatListModule,
     MatCardModule,
   ],

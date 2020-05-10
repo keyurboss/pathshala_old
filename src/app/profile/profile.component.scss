@@ -28,3 +28,13 @@
        Every toolbar row uses a flexbox row layout. */
   flex: 1 1 auto;
 }
+.whatspp-icon{
+  &-size{
+    width: 5vh;
+    height: 5vh;
+  }
+  margin-right: 2vh;
+}
+.mat-raised-button{
+  padding: 10px 16px;
+}
