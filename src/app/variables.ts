@@ -4,11 +4,20 @@ import { environment } from '../environments/environment';
     providedIn: 'root'
 })
 export class Variables {
-    private baseUrl = 'http://localhost:3030';
+    
+    private baseUrl;
     constructor(){  
-        if(environment.production){
-            this.baseUrl = "http://server.rpsoftech.xyz:3030";
+        let protocol = 'http:'
+        let url = 'localhost';
+        let port = '3030';
+        if (location.protocol === 'https:') {
+            protocol='https:';
+            port='3443';
         }
+        if(environment.production){
+            url = "server.rpsoftech.xyz";
+        }
+        this.baseUrl = protocol+'//'+url+':'+port;
     }
     getBaseUrl():String{
         return this.baseUrl;

@@ -4,12 +4,12 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const router = express.Router();
 const loginRouter = express.Router();
-var fs = require('fs');
-var http = require('http');
-var https = require('https');
-var privateKey  = fs.readFileSync(__dirname+'/certs/server.key', 'utf8');
-var certificate = fs.readFileSync(__dirname+'/certs/server.crt', 'utf8');
-var credentials = {key: privateKey, cert: certificate};
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
+const privateKey  = fs.readFileSync(__dirname+'/certs/server.key', 'utf8');
+const certificate = fs.readFileSync(__dirname+'/certs/server.crt', 'utf8');
+const credentials = {key: privateKey, cert: certificate};
 const cors = require("cors");
 const QueryBuilder = require("node-querybuilder");
 const settings = {
@@ -173,11 +173,12 @@ router.all('/islogin',(req,res)=>{
 router.post("/mydetails", (req, res) => {
   res.send({success:1,data:req.user});
 });
-var httpServer = http.createServer(app);
-var httpsServer = https.createServer(credentials, app);
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer(credentials, app);
 
 httpServer.listen(3030);
-httpsServer.listen(3443);
+let a = httpsServer.listen(3443);
+// a.on('secureConnection',console.log);
 // app.listen(process.env.PORT || 3030, () => {
 //   console.log(`App Started on PORT ${process.env.PORT || 3030}`);
 // });
