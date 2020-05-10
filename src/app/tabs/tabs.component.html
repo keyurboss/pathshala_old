@@ -1,5 +1,5 @@
 <div class="full-height">
-    <mat-tab-group class="flex-container mat-primary" mat-align-tabs="center" backgroundColor="primary">
+    <mat-tab-group class="flex-container mat-primary" mat-align-tabs="center" backgroundColor="primary" (swipe)="swipe('left')" [selectedIndex]="selected" (swipeleft)="swipe($event.type)" (swiperight)="swipe($event.type)">
       <mat-tab label="Profile">
           <div class="tab-background">
             <app-profile></app-profile>

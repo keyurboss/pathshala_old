@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule,HammerGestureConfig, HAMMER_GESTURE_CONFIG, HammerModule} from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AppComponent } from './app.component';
@@ -18,7 +18,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { LoginComponent } from './login/login.component';
 import { FormsModule } from '@angular/forms';
+import * as Hammer from 'hammerjs';
 import { PointsOverViewComponent } from './points-over-view/points-over-view.component';
+export class MyHammerConfig extends HammerGestureConfig  {
+  overrides = <any>{
+      // override hammerjs default configuration
+      swipe: { direction: Hammer.DIRECTION_ALL  },
+      // touchAction:'auto'
+  }
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,6 +41,7 @@ import { PointsOverViewComponent } from './points-over-view/points-over-view.com
     HttpClientModule,
     BrowserAnimationsModule,
     Routes,
+    HammerModule,
     MatTabsModule,
     FormsModule,
     MatDividerModule,
@@ -51,7 +60,12 @@ import { PointsOverViewComponent } from './points-over-view/points-over-view.com
       useClass: TokenInterceptor,
       multi: true,
     },
+    { 
+      provide: HAMMER_GESTURE_CONFIG, 
+      useClass: MyHammerConfig 
+  },
   ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
+
