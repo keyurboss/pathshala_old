@@ -73,7 +73,6 @@ export class BasicFunctionsService {
         "id":userName,
         "password":this.vanill.MD5(password)
       };
-      console.log(a);
       this.http.getLoginHttp('/login',a).then((data)=>{
         if(data.success && data.success == 1 && data.data.accessToken){
           localStorage.setItem('accessToken',data.data.accessToken);

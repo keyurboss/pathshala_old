@@ -14,7 +14,6 @@ export class LoginComponent implements OnInit {
   user_id='';
   waiting = false;
   constructor(private basic:BasicFunctionsService,private state:StateService) {
-    console.log(this);
   }
   ngOnInit(): void {
   }

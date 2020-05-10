@@ -14,7 +14,6 @@ export function logincheck(
       .catch(() => {
         setTimeout(() => {
           reject();
-          console.log('here');
           state.go('login');
         }, 100);
       });
