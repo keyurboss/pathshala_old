@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { BasicFunctionsService } from '../services/basic-functions.service';
 import {GlobalVariables} from '../variables';
 import { StateService } from '@uirouter/core';
-import { stat } from 'fs';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
