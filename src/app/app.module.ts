@@ -18,6 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { LoginComponent } from './login/login.component';
 import { FormsModule } from '@angular/forms';
+import { PointsOverViewComponent } from './points-over-view/points-over-view.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,6 +26,7 @@ import { FormsModule } from '@angular/forms';
     TabsComponent,
     LostPagesComponent,
     LoginComponent,
+    PointsOverViewComponent,
   ],
   imports: [
     BrowserModule,

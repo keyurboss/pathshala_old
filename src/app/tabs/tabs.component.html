@@ -1,16 +1,14 @@
 <div class="full-height">
-    <mat-tab-group class="flex-container" mat-align-tabs="center">
+    <mat-tab-group class="flex-container mat-primary" mat-align-tabs="center" backgroundColor="primary">
       <mat-tab label="Profile">
-        <ng-template matTabContent>
           <div class="tab-background">
             <app-profile></app-profile>
           </div>
-        </ng-template>
       </mat-tab>
       <mat-tab label="Overview">
   
         <ng-template matTabContent>
-          Content 2
+          <app-points-over-view></app-points-over-view>
         </ng-template>
       </mat-tab>
       <mat-tab label="Third">

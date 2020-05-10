@@ -17,6 +17,7 @@ export class ProfileComponent implements OnInit {
       delete profile['extra'];
       this.profileDetails = profile;
       this.profileDetailsKeys = Object.keys(this.profileDetails);
+      console.log('test');
     });
   }
 
