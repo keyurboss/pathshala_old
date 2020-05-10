@@ -3,8 +3,8 @@
     <div class="profilename">
       <span>Shah Keyur Rajeshkumar</span>
     </div>
-    <div *ngIf="userExtraDetails.unique_id" class="unique-id">
-      <span>UNIQUE-ID:{{userExtraDetails.unique_id}}</span>
+    <div *ngIf="userExtraDetails['unique_id']" class="unique-id">
+      <span>UNIQUE-ID:{{userExtraDetails['unique_id']}}</span>
       <!-- <br><span>Please Note Your Unique ID</span> -->
     </div>
     <mat-list style="width: 100%;">
