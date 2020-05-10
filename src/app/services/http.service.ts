@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
   HttpClient,
-  HttpHeaders,
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Variables } from '../variables';
@@ -53,11 +52,12 @@ export class HttpService {
             resolve();
           }else{
             ////GOTO LOgin Page
-            // this.state.go()
+            this.state.go('login');
+            reject();
           }
         }).catch(()=>{
              ////GOTO LOgin Page
-            // this.state.go()
+            this.state.go('login');
             reject();
         });
       }else{

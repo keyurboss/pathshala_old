@@ -15,7 +15,7 @@ export function logincheck(
         setTimeout(() => {
           reject();
           console.log('here');
-          state.go('404');
+          state.go('login');
         }, 100);
       });
   });

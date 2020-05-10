@@ -13,13 +13,18 @@ import { MatListModule } from '@angular/material/list';
 import {MatButtonModule} from '@angular/material/button';
 import { Routes } from './app.route';
 import { TabsComponent } from './tabs/tabs.component';
-import { from } from 'rxjs';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatIconModule} from '@angular/material/icon';
+import { LoginComponent } from './login/login.component';
+import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
     ProfileComponent,
     TabsComponent,
     LostPagesComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -27,9 +32,13 @@ import { from } from 'rxjs';
     BrowserAnimationsModule,
     Routes,
     MatTabsModule,
+    FormsModule,
     MatDividerModule,
+    MatInputModule,
     MatButtonModule,
+    MatIconModule,
     MatListModule,
+    MatFormFieldModule,
     MatCardModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

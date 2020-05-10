@@ -1,0 +1,22 @@
+<div class="example-container">
+  <mat-form-field hintLabel="Max 10 characters"  appearance="outline">
+    <mat-label>Enter your password</mat-label>
+    <input
+      matInput 
+      [type]="hide ? 'password' : 'text'"
+      [(ngModel)]="password"
+      maxlength="10"
+      placeholder="Password"
+    />
+    <mat-hint align="end">{{password?.length || 0}}/10</mat-hint>
+    <button
+      mat-icon-button
+      matSuffix
+      (click)="hide = !hide"
+      [attr.aria-label]="'Hide password'"
+      [attr.aria-pressed]="hide"
+    >
+      <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
