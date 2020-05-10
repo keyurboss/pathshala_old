@@ -4,9 +4,13 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const router = express.Router();
 const loginRouter = express.Router();
-
+var fs = require('fs');
+var http = require('http');
+var https = require('https');
+var privateKey  = fs.readFileSync(__dirname+'/certs/server.key', 'utf8');
+var certificate = fs.readFileSync(__dirname+'/certs/server.crt', 'utf8');
+var credentials = {key: privateKey, cert: certificate};
 const cors = require("cors");
-const mysql = require("mysql");
 const QueryBuilder = require("node-querybuilder");
 const settings = {
   host: "server.rpsoftech.xyz",
@@ -102,7 +106,7 @@ const addRefreshTokenandMakeEntry = function (user, token) {
   });
 };
 app.use("/api", router);
-app.use('/test',authenticateToken,(req,res)=>{
+app.use('/test',(req,res)=>{
   res.send({data:"success"});
 });
 app.use("/loginserver", loginRouter);
@@ -169,6 +173,11 @@ router.all('/islogin',(req,res)=>{
 router.post("/mydetails", (req, res) => {
   res.send({success:1,data:req.user});
 });
-app.listen(process.env.PORT || 3030, () => {
-  console.log(`App Started on PORT ${process.env.PORT || 3000}`);
-});
+var httpServer = http.createServer(app);
+var httpsServer = https.createServer(credentials, app);
+
+httpServer.listen(3030);
+httpsServer.listen(3443);
+// app.listen(process.env.PORT || 3030, () => {
+//   console.log(`App Started on PORT ${process.env.PORT || 3030}`);
+// });
