@@ -17,6 +17,8 @@ import { TabsComponent } from './tabs/tabs.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatTooltipModule} from '@angular/material/tooltip';
 import { LoginComponent } from './login/login.component';
 import { FormsModule } from '@angular/forms';
 import * as Hammer from 'hammerjs';
@@ -51,6 +53,8 @@ export class MyHammerConfig extends HammerGestureConfig  {
     MatRadioModule,
     MatInputModule,
     MatButtonModule,
+    MatToolbarModule,
+    MatTooltipModule,
     MatIconModule,
     MatListModule,
     MatFormFieldModule,

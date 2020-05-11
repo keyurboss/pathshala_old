@@ -28,6 +28,18 @@ const state = [
     name: '404',
     url: '/lostPgae',
     component: LostPagesComponent,
+    resolve: [
+      {
+        token: 'person',
+        deps: [Transition, StateService, BasicFunctionsService],
+        resolveFn: (traL:Transition)=>{
+          console.log(traL.from());
+          console.log(traL.to());
+          console.log(traL);
+          return true;
+        },
+      },
+    ]
   },
   {
     name: 'login',
