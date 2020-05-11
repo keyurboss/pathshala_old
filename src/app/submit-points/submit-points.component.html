@@ -1,0 +1,27 @@
+<div class="main-container">
+    <div class="submitheaderla">
+        <h2>Points Submit</h2>
+    </div>
+    <div class="submit">
+    <div>
+      <mat-radio-group
+        aria-labelledby="example-radio-group-label"
+        class="example-radio-group"
+        [(ngModel)]="selected"
+      >
+        <mat-radio-button
+          class="example-radio-button"
+          *ngFor="let type of types"
+          [value]="type"
+        >
+          {{ type }}
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div class="submitPointButton">
+      <button mat-raised-button color="accent" (click)="submitbuttonClicked()">
+        Submit Points
+      </button>
+    </div>
+  </div>
+</div>

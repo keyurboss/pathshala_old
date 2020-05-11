@@ -87,4 +87,17 @@ export class BasicFunctionsService {
       }).catch(reject);
     });
   }
+  clearhistoryGotoLink(url='',fullUrl=false){
+    let locationToGO = location.origin + url;
+    if(fullUrl){
+      locationToGO = url;
+    }
+    setTimeout(()=>{
+      console.log(locationToGO);
+      location.replace(locationToGO);
+    });
+    let step = history.length -1;
+    console.log(step);
+    history.go(-step);
+  }
 }

@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
   login():void{
     this.waiting = true;
     this.basic.login(this.user_id,this.password).then(()=>{
-      this.state.go('home');
+      this.basic.clearhistoryGotoLink();    
     }).catch(()=>{
       GlobalVariables.swal.fire('Error','Something Went Wrong','error');
     }).finally(()=>{

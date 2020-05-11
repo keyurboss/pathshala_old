@@ -9,6 +9,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { LostPagesComponent } from './lost-pages/lost-pages.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
+import {MatRadioModule} from '@angular/material/radio';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { Routes } from './app.route';
@@ -20,6 +21,7 @@ import { LoginComponent } from './login/login.component';
 import { FormsModule } from '@angular/forms';
 import * as Hammer from 'hammerjs';
 import { PointsOverViewComponent } from './points-over-view/points-over-view.component';
+import { SubmitPointsComponent } from './submit-points/submit-points.component';
 export class MyHammerConfig extends HammerGestureConfig  {
   overrides = <any>{
       // override hammerjs default configuration
@@ -35,6 +37,7 @@ export class MyHammerConfig extends HammerGestureConfig  {
     LostPagesComponent,
     LoginComponent,
     PointsOverViewComponent,
+    SubmitPointsComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,6 +48,7 @@ export class MyHammerConfig extends HammerGestureConfig  {
     MatTabsModule,
     FormsModule,
     MatDividerModule,
+    MatRadioModule,
     MatInputModule,
     MatButtonModule,
     MatIconModule,

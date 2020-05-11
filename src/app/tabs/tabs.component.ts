@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TabsComponent implements OnInit {
   tab_num = 3;
-  selected = 0;
+  selected = 2;
   SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight' };
   constructor() { }
 
