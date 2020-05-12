@@ -1,15 +1,21 @@
-import { BrowserModule,HammerGestureConfig, HAMMER_GESTURE_CONFIG, HammerModule} from '@angular/platform-browser';
+import {
+  BrowserModule,
+  HammerGestureConfig,
+  HAMMER_GESTURE_CONFIG,
+  HammerModule,
+} from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AppComponent } from './app.component';
 import { TokenInterceptor } from './auth/httpIntercepter.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { GestureConfig } from '@angular/material/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ProfileComponent } from './profile/profile.component';
 import { LostPagesComponent } from './lost-pages/lost-pages.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
-import {MatRadioModule} from '@angular/material/radio';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { Routes } from './app.route';
@@ -17,19 +23,22 @@ import { TabsComponent } from './tabs/tabs.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { LoginComponent } from './login/login.component';
 import { FormsModule } from '@angular/forms';
-import * as Hammer from 'hammerjs';
 import { PointsOverViewComponent } from './points-over-view/points-over-view.component';
 import { SubmitPointsComponent } from './submit-points/submit-points.component';
-export class MyHammerConfig extends HammerGestureConfig  {
+import { SubmitDialogComponent } from './submit-points/submit-dialogpopup.component';
+export class MyHammerConfig extends HammerGestureConfig {
   overrides = <any>{
-      // override hammerjs default configuration
-      swipe: { direction: Hammer.DIRECTION_ALL  },
-      // touchAction:'auto'
-  }
+    // override hammerjs default configuration
+    swipe: { direction: 6 },
+    // touchAction:'auto'
+  };
+  // options={
+  //     touchAction:'auto'
+  // }
 }
 @NgModule({
   declarations: [
@@ -40,13 +49,14 @@ export class MyHammerConfig extends HammerGestureConfig  {
     LoginComponent,
     PointsOverViewComponent,
     SubmitPointsComponent,
+    SubmitDialogComponent,
   ],
   imports: [
     BrowserModule,
+    HammerModule,
     HttpClientModule,
     BrowserAnimationsModule,
     Routes,
-    HammerModule,
     MatTabsModule,
     FormsModule,
     MatDividerModule,
@@ -68,12 +78,11 @@ export class MyHammerConfig extends HammerGestureConfig  {
       useClass: TokenInterceptor,
       multi: true,
     },
-    { 
-      provide: HAMMER_GESTURE_CONFIG, 
-      useClass: MyHammerConfig 
-  },
+    {
+      provide: HAMMER_GESTURE_CONFIG,
+      useClass: GestureConfig,
+    },
   ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
-

@@ -3,13 +3,16 @@
 //     height: 100%;
 // }
 .example-spacer {
-    flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+.toolbar {
+  // height: 10vh;
+  &-icon {
+    width: 1.5em;
+    height: 1.5em;
+    cursor: pointer;
   }
-  .toolbar{
-    // height: 10vh;
-    &-icon{
-      width: 1.5em;
-      height: 1.5em;
-      cursor: pointer;
-    }
-  }
+}
+.touch{
+  touch-action: none;
+}

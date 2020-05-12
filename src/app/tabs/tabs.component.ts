@@ -15,11 +15,10 @@ export class TabsComponent implements OnInit {
 
   ngOnInit(): void {}
   swipe(eType) {
-    console.log(eType);
-    if (eType === this.SWIPE_ACTION.LEFT && this.selected > 0) {
+    if (eType === this.SWIPE_ACTION.RIGHT && this.selected > 0) {
       this.selected--;
     } else if (
-      eType === this.SWIPE_ACTION.RIGHT &&
+      eType === this.SWIPE_ACTION.LEFT &&
       this.selected < this.tab_num
     ) {
       this.selected++;
