@@ -30,6 +30,8 @@ import { FormsModule } from '@angular/forms';
 import { PointsOverViewComponent } from './points-over-view/points-over-view.component';
 import { SubmitPointsComponent } from './submit-points/submit-points.component';
 import { SubmitDialogComponent } from './submit-points/submit-dialogpopup.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = <any>{
     // override hammerjs default configuration
@@ -69,6 +71,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     MatListModule,
     MatFormFieldModule,
     MatCardModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
