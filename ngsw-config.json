@@ -9,6 +9,7 @@
         "files": [
           "/favicon.ico",
           "/index.html",
+          "/firebase-messaging-sw.js",
           "/manifest.webmanifest",
           "/*.css",
           "/*.js"

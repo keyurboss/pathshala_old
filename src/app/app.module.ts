@@ -32,9 +32,15 @@ import { SubmitPointsComponent } from './submit-points/submit-points.component';
 import { SubmitDialogComponent } from './submit-points/submit-dialogpopup.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { AngularFireModule } from '@angular/fire';
+import * as firebase from 'firebase/app' ;
+import 'firebase/messaging' ;
+
+import { AngularFireModule,FirebaseAppConfig } from '@angular/fire';
+import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
+
 import { AngularFireMessagingModule, AngularFireMessaging } from '@angular/fire/messaging'
-import {PushServiceService} from './services/push-service.service';
+
+import { from } from 'rxjs';
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = <any>{
     // override hammerjs default configuration
@@ -42,7 +48,7 @@ export class MyHammerConfig extends HammerGestureConfig {
     // touchAction:'auto'
   };
 }
-const firebaseConfig = {
+const firebaseConfig:FirebaseAppConfig = {
   apiKey: "AIzaSyAYGFnYEXMrcDvICWHLcpSqeVYMfVilfc4",
   authDomain: "pathshala-9a06d.firebaseapp.com",
   databaseURL: "https://pathshala-9a06d.firebaseio.com",
@@ -68,6 +74,7 @@ const firebaseConfig = {
     HttpClientModule,
     BrowserAnimationsModule,
     Routes,
+    AngularFireAnalyticsModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireMessagingModule,
     MatTabsModule,
@@ -100,11 +107,15 @@ const firebaseConfig = {
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(private angularFireMessaging: AngularFireMessaging){
-    this.angularFireMessaging.messages.subscribe((_messaging) => {
-      console.log(_messaging);
-    });
+  constructor(private angularFireMessaging:AngularFireMessaging){
+    // this.angularFireMessaging.messages.subscribe((_messaging) => {
+    //   console.log(_messaging);
+    // });
+    angularFireMessaging.usePublicVapidKey('BD6MvUZOOe62tjGvUJBcj3q06855aoh4P9FBGqP63jsuNmzMmp4amIjsGq1K3iTJvqm1P_rnTul3aBx-VH76YQw');
+    angularFireMessaging.getToken.subscribe(console.log)
+    window['a'] =  firebase.initializeApp(firebaseConfig);
     console.log("executed");
+    // Firemessages.
     window['aa'] = angularFireMessaging;
   }
 }
