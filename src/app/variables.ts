@@ -11,7 +11,7 @@ export class Variables {
         let protocol = 'http:'
         let url = 'localhost';
         let port = '3030';
-        if (location.protocol === 'https:') {
+        if (location.protocol === 'https:' && environment.production) {
             protocol='https:';
             port='3443';
         }

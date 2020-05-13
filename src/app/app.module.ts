@@ -32,16 +32,25 @@ import { SubmitPointsComponent } from './submit-points/submit-points.component';
 import { SubmitDialogComponent } from './submit-points/submit-dialogpopup.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireMessagingModule, AngularFireMessaging } from '@angular/fire/messaging'
+import {PushServiceService} from './services/push-service.service';
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = <any>{
     // override hammerjs default configuration
     swipe: { direction: 6 },
     // touchAction:'auto'
   };
-  // options={
-  //     touchAction:'auto'
-  // }
 }
+const firebaseConfig = {
+  apiKey: "AIzaSyAYGFnYEXMrcDvICWHLcpSqeVYMfVilfc4",
+  authDomain: "pathshala-9a06d.firebaseapp.com",
+  databaseURL: "https://pathshala-9a06d.firebaseio.com",
+  projectId: "pathshala-9a06d",
+  storageBucket: "pathshala-9a06d.appspot.com",
+  messagingSenderId: "1079147185431",
+  appId: "1:1079147185431:web:defd50ffb1567becf5a352"
+};
 @NgModule({
   declarations: [
     AppComponent,
@@ -59,6 +68,8 @@ export class MyHammerConfig extends HammerGestureConfig {
     HttpClientModule,
     BrowserAnimationsModule,
     Routes,
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireMessagingModule,
     MatTabsModule,
     FormsModule,
     MatDividerModule,
@@ -88,4 +99,12 @@ export class MyHammerConfig extends HammerGestureConfig {
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private angularFireMessaging: AngularFireMessaging){
+    this.angularFireMessaging.messages.subscribe((_messaging) => {
+      console.log(_messaging);
+    });
+    console.log("executed");
+    window['aa'] = angularFireMessaging;
+  }
+}
