@@ -9,7 +9,7 @@ export class Variables {
     private baseUrl;
     constructor(){  
         let protocol = 'http:'
-        let url = 'localhost';
+        let url = location.hostname;
         let port = '3030';
         if (location.protocol === 'https:' && environment.production) {
             protocol='https:';

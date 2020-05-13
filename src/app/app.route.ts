@@ -6,10 +6,9 @@ import {
 } from '@uirouter/angular';
 import { LostPagesComponent } from './lost-pages/lost-pages.component';
 import { TabsComponent } from './tabs/tabs.component';
-import { Injector } from '@angular/core';
 import { BasicFunctionsService } from './services/basic-functions.service';
 import { logincheck } from './resolveFun';
-import { from } from 'rxjs';
+import {environment} from '../environments/environment';
 import { LoginComponent } from './login/login.component';
 const state = [
   {
@@ -47,12 +46,17 @@ const state = [
     component: LoginComponent,
   },
 ];
-const defaultConfigFun = function (router: UIRouter, injector: Injector) {
+const defaultConfigFun = function (router: UIRouter, state: StateService) {
   router.urlService.rules.initial({ state: 'home' });
   router.urlService.rules.otherwise({ state: '404' });
+  state.defaultErrorHandler((error)=>{
+    if(environment.production == false){
+      console.log(error);
+    }
+  });
 };
 export const Routes = UIRouterModule.forRoot({
   states: state,
-  useHash: true,
+  useHash: false,
   config: defaultConfigFun,
 });

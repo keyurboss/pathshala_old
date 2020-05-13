@@ -36,6 +36,8 @@ import * as firebase from 'firebase/app';
 import 'firebase/messaging';
 
 import { AngularFireModule, FirebaseAppConfig } from '@angular/fire';
+import { AngularFireAnalyticsModule, AngularFireAnalytics } from '@angular/fire/analytics';
+import { AngularFirePerformanceModule, AngularFirePerformance } from '@angular/fire/performance';
 
 import {
   AngularFireMessagingModule,
@@ -58,6 +60,7 @@ const firebaseConfig: FirebaseAppConfig = {
   storageBucket: 'pathshala-9a06d.appspot.com',
   messagingSenderId: '1079147185431',
   appId: '1:1079147185431:web:defd50ffb1567becf5a352',
+  measurementId: "G-NMX2YFM97C"
 };
 @NgModule({
   declarations: [
@@ -78,6 +81,8 @@ const firebaseConfig: FirebaseAppConfig = {
     Routes,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireMessagingModule,
+    AngularFireAnalyticsModule,
+    AngularFirePerformanceModule,
     MatTabsModule,
     FormsModule,
     MatDividerModule,
@@ -110,7 +115,7 @@ const firebaseConfig: FirebaseAppConfig = {
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(private angularFireMessaging: AngularFireMessaging) {
+  constructor(private angularFireMessaging: AngularFireMessaging, private analy:AngularFireAnalytics,private per:AngularFirePerformance) {
     // this.angularFireMessaging.messages.subscribe((_messaging) => {
     //   console.log(_messaging);
     // });
@@ -119,11 +124,7 @@ export class AppModule {
         'BD6MvUZOOe62tjGvUJBcj3q06855aoh4P9FBGqP63jsuNmzMmp4amIjsGq1K3iTJvqm1P_rnTul3aBx-VH76YQw'
       )
       .then(() => {
-        angularFireMessaging.getToken.subscribe(console.log);
+        angularFireMessaging.getToken.subscribe(console.log,console.log);
       });
-    window['a'] = firebase.initializeApp(firebaseConfig);
-    console.log('executed');
-    // Firemessages.
-    window['aa'] = angularFireMessaging;
   }
 }
