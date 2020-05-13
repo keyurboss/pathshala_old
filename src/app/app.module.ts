@@ -32,13 +32,15 @@ import { SubmitPointsComponent } from './submit-points/submit-points.component';
 import { SubmitDialogComponent } from './submit-points/submit-dialogpopup.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import * as firebase from 'firebase/app' ;
-import 'firebase/messaging' ;
+import * as firebase from 'firebase/app';
+import 'firebase/messaging';
 
-import { AngularFireModule,FirebaseAppConfig } from '@angular/fire';
-import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
+import { AngularFireModule, FirebaseAppConfig } from '@angular/fire';
 
-import { AngularFireMessagingModule, AngularFireMessaging } from '@angular/fire/messaging'
+import {
+  AngularFireMessagingModule,
+  AngularFireMessaging,
+} from '@angular/fire/messaging';
 
 import { from } from 'rxjs';
 export class MyHammerConfig extends HammerGestureConfig {
@@ -48,14 +50,14 @@ export class MyHammerConfig extends HammerGestureConfig {
     // touchAction:'auto'
   };
 }
-const firebaseConfig:FirebaseAppConfig = {
-  apiKey: "AIzaSyAYGFnYEXMrcDvICWHLcpSqeVYMfVilfc4",
-  authDomain: "pathshala-9a06d.firebaseapp.com",
-  databaseURL: "https://pathshala-9a06d.firebaseio.com",
-  projectId: "pathshala-9a06d",
-  storageBucket: "pathshala-9a06d.appspot.com",
-  messagingSenderId: "1079147185431",
-  appId: "1:1079147185431:web:defd50ffb1567becf5a352"
+const firebaseConfig: FirebaseAppConfig = {
+  apiKey: 'AIzaSyAYGFnYEXMrcDvICWHLcpSqeVYMfVilfc4',
+  authDomain: 'pathshala-9a06d.firebaseapp.com',
+  databaseURL: 'https://pathshala-9a06d.firebaseio.com',
+  projectId: 'pathshala-9a06d',
+  storageBucket: 'pathshala-9a06d.appspot.com',
+  messagingSenderId: '1079147185431',
+  appId: '1:1079147185431:web:defd50ffb1567becf5a352',
 };
 @NgModule({
   declarations: [
@@ -74,7 +76,6 @@ const firebaseConfig:FirebaseAppConfig = {
     HttpClientModule,
     BrowserAnimationsModule,
     Routes,
-    AngularFireAnalyticsModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireMessagingModule,
     MatTabsModule,
@@ -89,7 +90,9 @@ const firebaseConfig:FirebaseAppConfig = {
     MatListModule,
     MatFormFieldModule,
     MatCardModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+    }),
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
@@ -107,14 +110,19 @@ const firebaseConfig:FirebaseAppConfig = {
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(private angularFireMessaging:AngularFireMessaging){
+  constructor(private angularFireMessaging: AngularFireMessaging) {
     // this.angularFireMessaging.messages.subscribe((_messaging) => {
     //   console.log(_messaging);
     // });
-    angularFireMessaging.usePublicVapidKey('BD6MvUZOOe62tjGvUJBcj3q06855aoh4P9FBGqP63jsuNmzMmp4amIjsGq1K3iTJvqm1P_rnTul3aBx-VH76YQw');
-    angularFireMessaging.getToken.subscribe(console.log)
-    window['a'] =  firebase.initializeApp(firebaseConfig);
-    console.log("executed");
+    angularFireMessaging
+      .usePublicVapidKey(
+        'BD6MvUZOOe62tjGvUJBcj3q06855aoh4P9FBGqP63jsuNmzMmp4amIjsGq1K3iTJvqm1P_rnTul3aBx-VH76YQw'
+      )
+      .then(() => {
+        angularFireMessaging.getToken.subscribe(console.log);
+      });
+    window['a'] = firebase.initializeApp(firebaseConfig);
+    console.log('executed');
     // Firemessages.
     window['aa'] = angularFireMessaging;
   }
