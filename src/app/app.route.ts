@@ -3,6 +3,7 @@ import {
   UIRouter,
   Transition,
   StateService,
+  Ng2StateDeclaration,
 } from '@uirouter/angular';
 import { LostPagesComponent } from './lost-pages/lost-pages.component';
 import { TabsComponent } from './tabs/tabs.component';
@@ -10,7 +11,7 @@ import { BasicFunctionsService } from './services/basic-functions.service';
 import { logincheck } from './resolveFun';
 import {environment} from '../environments/environment';
 import { LoginComponent } from './login/login.component';
-const state = [
+const state :Ng2StateDeclaration[] = [
   {
     name: 'home',
     url: '/home',
@@ -39,6 +40,11 @@ const state = [
         },
       },
     ]
+  },
+  {
+    name:'default',
+    url:'',
+    redirectTo:'home'
   },
   {
     name: 'login',
