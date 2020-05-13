@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Variables } from '../variables';
 import { HttpService } from './http.service';
 import {VanillaFunctionsService} from './vanilla.service';
 @Injectable({
@@ -7,9 +6,7 @@ import {VanillaFunctionsService} from './vanilla.service';
 })
 export class BasicFunctionsService {
   area = 'asdasd';
-  private appVariables: Variables;
   constructor(private http: HttpService, private window: Window,private vanill:VanillaFunctionsService) {
-    this.appVariables = new Variables();
     this.window['demo'] = this;
   }
   isLogin() {
@@ -89,6 +86,9 @@ export class BasicFunctionsService {
   }
   clearhistoryGotoLink(url='/',fullUrl=false){
     let locationToGO = location.origin + url;
+    if(fullUrl){
+      locationToGO = url;
+    };
     setTimeout(()=>{
       console.log(locationToGO);
       location.replace(locationToGO);
