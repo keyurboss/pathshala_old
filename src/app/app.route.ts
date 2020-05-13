@@ -49,14 +49,10 @@ const state = [
 const defaultConfigFun = function (router: UIRouter, state: StateService) {
   router.urlService.rules.initial({ state: 'home' });
   router.urlService.rules.otherwise({ state: '404' });
-  state.defaultErrorHandler((error)=>{
-    if(environment.production == false){
-      console.log(error);
-    }
-  });
+  
 };
 export const Routes = UIRouterModule.forRoot({
   states: state,
-  useHash: false,
+  useHash: true,
   config: defaultConfigFun,
 });

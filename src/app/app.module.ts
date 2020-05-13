@@ -45,6 +45,7 @@ import {
 } from '@angular/fire/messaging';
 
 import { from } from 'rxjs';
+import { StateService } from '@uirouter/core';
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = <any>{
     // override hammerjs default configuration
@@ -115,16 +116,28 @@ const firebaseConfig: FirebaseAppConfig = {
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(private angularFireMessaging: AngularFireMessaging, private analy:AngularFireAnalytics,private per:AngularFirePerformance) {
+  constructor(private angularFireMessaging: AngularFireMessaging, private analy:AngularFireAnalytics,private per:AngularFirePerformance,private state : StateService) {
     // this.angularFireMessaging.messages.subscribe((_messaging) => {
     //   console.log(_messaging);
     // });
-    angularFireMessaging
+    this.initFirebase();
+    this.initApp();
+  }
+  initApp(){
+    console.log("default Set");
+    this.state.defaultErrorHandler((error)=>{
+      if(environment.production == false){
+        console.log(error);
+      }
+    });
+  }
+  initFirebase(){
+    this.angularFireMessaging
       .usePublicVapidKey(
         'BD6MvUZOOe62tjGvUJBcj3q06855aoh4P9FBGqP63jsuNmzMmp4amIjsGq1K3iTJvqm1P_rnTul3aBx-VH76YQw'
       )
       .then(() => {
-        angularFireMessaging.getToken.subscribe(console.log,console.log);
+        this.angularFireMessaging.getToken.subscribe(console.log,console.log);
       });
   }
 }
