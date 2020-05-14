@@ -26,15 +26,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { LoginComponent } from './login/login.component';
+import {MatSnackBarModule, MatSnackBar} from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { PointsOverViewComponent } from './points-over-view/points-over-view.component';
 import { SubmitPointsComponent } from './submit-points/submit-points.component';
 import { SubmitDialogComponent } from './submit-points/submit-dialogpopup.component';
-import { ServiceWorkerModule } from '@angular/service-worker';
+import { ServiceWorkerModule, SwUpdate } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import * as firebase from 'firebase/app';
-import 'firebase/messaging';
-
 import { AngularFireModule, FirebaseAppConfig } from '@angular/fire';
 import { AngularFireAnalyticsModule, AngularFireAnalytics } from '@angular/fire/analytics';
 import { AngularFirePerformanceModule, AngularFirePerformance } from '@angular/fire/performance';
@@ -79,6 +77,7 @@ const firebaseConfig: FirebaseAppConfig = {
     HammerModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    MatSnackBarModule,
     Routes,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireMessagingModule,
@@ -115,16 +114,17 @@ const firebaseConfig: FirebaseAppConfig = {
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {
-  constructor(private angularFireMessaging: AngularFireMessaging, private analy:AngularFireAnalytics,private per:AngularFirePerformance,private state : StateService) {
+export class AppModule{
+  constructor(private angularFireMessaging: AngularFireMessaging,private state : StateService , private swUpdate : SwUpdate ,private snackbar: MatSnackBar) {
     // this.angularFireMessaging.messages.subscribe((_messaging) => {
     //   console.log(_messaging);
     // });
     this.initFirebase();
     this.initApp();
+    this.Update();
   }
   initApp(){
-    console.log("default Set");
+    window['aaaaa'] = this;
     this.state.defaultErrorHandler((error)=>{
       if(environment.production == false){
         console.log(error);
@@ -139,5 +139,23 @@ export class AppModule {
       .then(() => {
         this.angularFireMessaging.getToken.subscribe(console.log,console.log);
       });
+  }
+  Update() :void{
+    if (this.swUpdate.isEnabled) {
+      this.swUpdate.available
+        .subscribe(() => {
+          this.swUpdate.available.subscribe(evt =>{
+            const snack = this.snackbar.open('Update Available', 'Reload',{duration:3000});
+            snack
+              .onAction()
+              .subscribe(() => {
+                snack.dismiss();
+                // window.location.reload();
+              });
+          });
+        });
+    }else{
+      console.log('not enabled');
+    }
   }
 }
