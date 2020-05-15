@@ -77,7 +77,7 @@ export class BasicFunctionsService {
             localStorage.setItem('refreshToken',data.data.refreshToken);
             delete data.data.refreshToken;
             localStorage.setItem('user',JSON.stringify(data.data));
-            resolve();
+            resolve(data.data);
         }else{
           reject();
         }
