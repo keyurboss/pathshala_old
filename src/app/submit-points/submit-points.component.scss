@@ -11,12 +11,12 @@
   align-items: center;
   margin-top: 2vh;
   &headerla {
-      text-align: center;
+    text-align: center;
     margin-top: 0.83em;
-    h2{
-        margin: 0;
+    h2 {
+      margin: 0;
     }
-    }
+  }
 }
 .example-radio-group {
   display: flex;
@@ -27,12 +27,26 @@
 .example-radio-button {
   margin: 5px;
 }
-.flex-center{
+.flex-center {
   display: flex;
   justify-content: center;
 }
-.submission{
-  &-title{
+.submission {
+  &-title {
     margin-top: 20px;
+  }
+}
+.gatha-div {
+  &-container{
+    display: flex;
+    justify-content: space-around;
+  }
+  &-margin {
+    margin-top: 2vh;
+    margin-left: 2vh;
+  }
+  &-discription{
+    width: 100%;
+    margin: 2vh;
   }
 }

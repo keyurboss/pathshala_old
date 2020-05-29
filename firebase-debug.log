@@ -1,0 +1,64 @@
+[debug] [2020-05-29T06:25:18.620Z] ----------------------------------------------------------------------
+[debug] [2020-05-29T06:25:18.621Z] Command:       /usr/bin/node /usr/local/bin/firebase deploy
+[debug] [2020-05-29T06:25:18.622Z] CLI Version:   8.4.0
+[debug] [2020-05-29T06:25:18.622Z] Platform:      linux
+[debug] [2020-05-29T06:25:18.622Z] Node Version:  v10.19.0
+[debug] [2020-05-29T06:25:18.622Z] Time:          Fri May 29 2020 11:55:18 GMT+0530 (India Standard Time)
+[debug] [2020-05-29T06:25:18.622Z] ----------------------------------------------------------------------
+[debug] [2020-05-29T06:25:18.622Z] 
+[debug] [2020-05-29T06:25:18.630Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-05-29T06:25:18.630Z] > authorizing via signed-in user
+[debug] [2020-05-29T06:25:18.630Z] [iam] checking project pathshala-9a06d for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2020-05-29T06:25:18.632Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/pathshala-9a06d:testIamPermissions  
+ {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2020-05-29T06:25:20.770Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Fri, 29 May 2020 06:25:20 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=1355","alt-svc":"h3-27=\":443\"; ma=2592000,h3-25=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q049=\":443\"; ma=2592000,h3-Q048=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-05-29T06:25:20.772Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/pathshala-9a06d  
+ 
+[debug] [2020-05-29T06:25:21.641Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Fri, 29 May 2020 06:25:21 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-27=\":443\"; ma=2592000,h3-25=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q049=\":443\"; ma=2592000,h3-Q048=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[info] 
+[info] === Deploying to 'pathshala-9a06d'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2020-05-29T06:25:21.644Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/pathshala-9a06d/versions  
+ {"config":{"rewrites":[{"glob":"**","path":"/index.html"}]},"labels":{"deployment-tool":"cli-firebase"}}
+[debug] [2020-05-29T06:25:24.202Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Fri, 29 May 2020 06:25:23 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-27=\":443\"; ma=2592000,h3-25=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q049=\":443\"; ma=2592000,h3-Q048=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[info] i  hosting[pathshala-9a06d]: beginning deploy... 
+[info] i  hosting[pathshala-9a06d]: found 24 files in dist 
+[debug] [2020-05-29T06:25:24.263Z] [hosting] hash cache [ZGlzdA] stored for 24 files
+[debug] [2020-05-29T06:25:24.264Z] [hosting][hash queue][FINAL] {"max":49,"min":7,"avg":11.375,"active":0,"complete":24,"success":24,"errored":0,"retried":0,"total":24,"elapsed":52}
+[debug] [2020-05-29T06:25:24.264Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/projects/1079147185431/sites/pathshala-9a06d/versions/356d03ee71633424:populateFiles  
+ <request body omitted>
+[debug] [2020-05-29T06:25:26.250Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Fri, 29 May 2020 06:25:26 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-27=\":443\"; ma=2592000,h3-25=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q049=\":443\"; ma=2592000,h3-Q048=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-05-29T06:25:26.255Z] [hosting][populate queue][FINAL] {"max":1988,"min":1988,"avg":1988,"active":0,"complete":1,"success":1,"errored":0,"retried":0,"total":1,"elapsed":1992}
+[debug] [2020-05-29T06:25:26.255Z] [hosting] uploads queued: 6
+[debug] [2020-05-29T06:25:30.268Z] [hosting][upload queue][FINAL] {"max":4017,"min":2048,"avg":3173,"active":0,"complete":6,"success":6,"errored":0,"retried":0,"total":6,"elapsed":4018}
+[info] ✔  hosting[pathshala-9a06d]: file upload complete 
+[debug] [2020-05-29T06:25:30.270Z] [hosting] deploy completed after 6065ms
+[debug] [2020-05-29T06:25:30.273Z] [
+  {
+    "config": {
+      "target": "pathshala",
+      "public": "dist",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    },
+    "site": "pathshala-9a06d",
+    "version": "projects/1079147185431/sites/pathshala-9a06d/versions/356d03ee71633424"
+  }
+]
+[info] i  hosting[pathshala-9a06d]: finalizing version... 
+[debug] [2020-05-29T06:25:30.275Z] >>> HTTP REQUEST PATCH https://firebasehosting.googleapis.com/v1beta1/projects/1079147185431/sites/pathshala-9a06d/versions/356d03ee71633424?updateMask=status  
+ {"status":"FINALIZED"}
+[debug] [2020-05-29T06:27:41.081Z] Error: connect ETIMEDOUT 172.217.160.170:443
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1107:14)
+[error] 
+[error] Error: Server Error. connect ETIMEDOUT 172.217.160.170:443

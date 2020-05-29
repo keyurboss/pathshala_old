@@ -26,13 +26,23 @@ export class SubmitPointsComponent implements OnInit {
 
   submitbuttonClicked() {
     if (this.selected !== false) {
-      this.swal.fire(
-        'Warning',
-        'Please Select Point Type' + this.selected,
-        'warning'
-      );
+      // this.swal.fire(
+      //   'Warning',
+      //   'Please Select Point Type' + this.selected,
+      //   'warning'
+      // );
       const dialogRef = this.dialog.open(SubmitDialogComponent, {
-        // width: '250px',
+        direction: 'ltr',
+        position: {
+          // top: '10px',
+          // right: '10px',
+          // left: '10px',
+          // bottom: '10px',
+        },
+        maxWidth: '75vh',
+        height: '90%',
+        width: '100%',
+        panelClass: 'full-screen-modal',
         data: { selected: this.selected },
       });
 

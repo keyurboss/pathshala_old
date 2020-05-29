@@ -5,11 +5,16 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { FormControl } from '@angular/forms';
+import { StateService } from '@uirouter/core';
 interface GathaTypeInter {
   value: string;
   viewValue: string;
 }
-
+interface GathSubmit {
+  selectedGath: string;
+  noGatha: number;
+  description?: string;
+}
 @Component({
   selector: 'app-submit-dialog',
   templateUrl: './submit-dialog.component.html',
@@ -27,20 +32,19 @@ export class SubmitDialogComponent implements OnInit {
     { value: 'new', viewValue: 'New' },
     { value: 'old', viewValue: 'Old' },
   ];
-  selectedGath = this.gathatype[0].value;
-  foods: GathaTypeInter[] = [
-    { value: 'new', viewValue: 'New' },
-    { value: 'old', viewValue: 'Old' },
-  ];
-
-  selectedFood = this.foods[0].value;
-
-
+  gathaDetails: GathSubmit[] = [];
+  constructor(private state: StateService) {}
   ngOnInit(): void {
     this.minDate = new Date(1589241600000);
     console.log(this.minDate);
     this.maxDate = new Date();
-    // console.log(this.data, '   from Parent');
-    // this.dialogRef.close({ sdfu: 'sdfsdfsfsfadfs' });
+    this.AddBlankGatha();
+  }
+  AddBlankGatha() {
+    this.gathaDetails.push({
+      noGatha: 0,
+      selectedGath: this.gathatype[0].viewValue,
+      description: '',
+    });
   }
 }

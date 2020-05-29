@@ -1,7 +1,6 @@
-
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
-@import '~@angular/material/theming';
+@import "~@angular/material/theming";
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -19,7 +18,11 @@ $pathshala-accent: mat-palette($mat-pink, A200, A100, A400);
 $pathshala-warn: mat-palette($mat-red);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$pathshala-theme: mat-light-theme($pathshala-primary, $pathshala-accent, $pathshala-warn);
+$pathshala-theme: mat-light-theme(
+  $pathshala-primary,
+  $pathshala-accent,
+  $pathshala-warn
+);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
@@ -28,8 +31,14 @@ $pathshala-theme: mat-light-theme($pathshala-primary, $pathshala-accent, $pathsh
 
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 .flex {
   &-container {
@@ -45,9 +54,21 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background: #eee;
   height: inherit;
 }
-.full-width{
+.full-width {
   width: 100%;
 }
-.mat-tab-body-content{
+.mat-tab-body-content {
   touch-action: none;
+}
+.mat-form-field-appearance-outline {
+  .mat-form-field-outline {
+    color: black;
+  }
+  color: black;
+}
+.full-screen-modal {
+  .mat-dialog-container {
+    max-width: none;
+    padding: unset;
+  }
 }
