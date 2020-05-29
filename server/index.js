@@ -144,7 +144,7 @@ loginRouter.post("/login", (req, res) => {
     });
   }
 });
-loginRouter.post("/refreshaceesstoken", (req, res) => {
+loginRouter.get("/refreshaceesstoken", (req, res) => {
   let data = req.body;
   if (data.token && typeof data.token !== "undefined") {
     jwt.verify(data.token, token.refreshToken, (err, user) => {
@@ -171,12 +171,12 @@ loginRouter.post("/refreshaceesstoken", (req, res) => {
 app.use("/loginserver", loginRouter);
 
 router.use(authenticateToken);
-router.all("/islogin", (req, res) => {
+router.get("/islogin", (req, res) => {
   res.send({
     success: 1,
   });
 });
-router.post("/mydetails", (req, res) => {
+router.get("/mydetails", (req, res) => {
   res.send({ success: 1, data: req.user });
 });
 app.use("*", (req, res) => {
