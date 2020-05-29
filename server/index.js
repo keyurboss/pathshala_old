@@ -169,13 +169,16 @@ loginRouter.get("/refreshaceesstoken", (req, res) => {
   }
 });
 app.use("/loginserver", loginRouter);
-
+app.use('/tojson/*',(req,res)=>{
+  res.send(req.query);
+});
 router.use(authenticateToken);
 router.get("/islogin", (req, res) => {
   res.send({
     success: 1,
   });
 });
+
 router.get("/mydetails", (req, res) => {
   res.send({ success: 1, data: req.user });
 });
