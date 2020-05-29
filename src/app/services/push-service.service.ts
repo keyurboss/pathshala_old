@@ -10,9 +10,9 @@ export class PushServiceService {
     private angularFireAuth: AngularFireAuth,
     private angularFireMessaging: AngularFireMessaging
   ) {
-    this.angularFireMessaging.messages.subscribe((_messaging) => {
-      console.log(_messaging);
+    this.angularFireMessaging.messages.subscribe((messaging) => {
+      console.log(messaging);
     });
-    console.log("executed");
+    console.log('executed');
   }
 }
