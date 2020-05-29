@@ -6,6 +6,8 @@ import {
 } from '@angular/material/dialog';
 import { FormControl } from '@angular/forms';
 import { StateService } from '@uirouter/core';
+import { GlobalVariables } from '../variables';
+import { HttpService } from '../services/http.service';
 interface GathaTypeInter {
   value: string;
   viewValue: string;
@@ -25,6 +27,7 @@ export class SubmitDialogComponent implements OnInit {
   //   public dialogRef: MatDialogRef<SubmitDialogComponent>,
   //   @Inject(MAT_DIALOG_DATA) public data: {}
   // ) {}
+  swal = GlobalVariables.swal;
   date = new FormControl(new Date());
   minDate: Date;
   maxDate: Date;
@@ -33,18 +36,36 @@ export class SubmitDialogComponent implements OnInit {
     { value: 'old', viewValue: 'Old' },
   ];
   gathaDetails: GathSubmit[] = [];
-  constructor(private state: StateService) {}
+  constructor(private state: StateService, private http: HttpService) {}
   ngOnInit(): void {
     this.minDate = new Date(1589241600000);
-    console.log(this.minDate);
     this.maxDate = new Date();
     this.AddBlankGatha();
   }
   AddBlankGatha() {
+    if (this.gathaDetails.length !== 0) {
+      const a = this.gathaDetails[this.gathaDetails.length - 1];
+      console.log(a);
+      if (a.noGatha === 0 || a.selectedGath === '') {
+        this.swal.fire('Warning', 'Please Fill All the Details', 'warning');
+        return;
+      }
+    }
     this.gathaDetails.push({
       noGatha: 0,
-      selectedGath: this.gathatype[0].viewValue,
+      selectedGath: this.gathatype[0].value,
       description: '',
     });
+  }
+  submit() {
+    this.gathaDetails.forEach((value) => {
+      if (value.noGatha === 0 || value.selectedGath === '') {
+        this.swal.fire('Warning', 'Please Fill All the Details', 'warning');
+        return;
+      }
+    });
+  }
+  dateChange() {
+    const submitionDate = this.date.value as Date;
   }
 }
