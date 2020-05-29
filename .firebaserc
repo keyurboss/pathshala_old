@@ -1,5 +1,11 @@
 {
-  "projects": {
-    "default": "pathshala-9a06d"
+  "targets": {
+    "pathshala-9a06d": {
+      "hosting": {
+        "pathshala": [
+          "pathshala-9a06d"
+        ]
+      }
+    }
   }
 }

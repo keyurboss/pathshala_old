@@ -26,16 +26,29 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { LoginComponent } from './login/login.component';
-import {MatSnackBarModule, MatSnackBar} from '@angular/material/snack-bar';
-import { FormsModule } from '@angular/forms';
+import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
+import { environment } from '../environments/environment';
+import { MatDialogModule } from '@angular/material/dialog';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PointsOverViewComponent } from './points-over-view/points-over-view.component';
 import { SubmitPointsComponent } from './submit-points/submit-points.component';
 import { SubmitDialogComponent } from './submit-points/submit-dialogpopup.component';
 import { ServiceWorkerModule, SwUpdate } from '@angular/service-worker';
-import { environment } from '../environments/environment';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSelectModule } from '@angular/material/select';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import 'firebase/messaging';
+
 import { AngularFireModule, FirebaseAppConfig } from '@angular/fire';
-import { AngularFireAnalyticsModule, AngularFireAnalytics } from '@angular/fire/analytics';
-import { AngularFirePerformanceModule, AngularFirePerformance } from '@angular/fire/performance';
+import {
+  AngularFireAnalyticsModule,
+  AngularFireAnalytics,
+} from '@angular/fire/analytics';
+import {
+  AngularFirePerformanceModule,
+  AngularFirePerformance,
+} from '@angular/fire/performance';
 
 import {
   AngularFireMessagingModule,
@@ -45,7 +58,7 @@ import {
 import { from } from 'rxjs';
 import { StateService } from '@uirouter/core';
 export class MyHammerConfig extends HammerGestureConfig {
-  overrides = <any>{
+  overrides = {
     // override hammerjs default configuration
     swipe: { direction: 6 },
     // touchAction:'auto'
@@ -59,7 +72,7 @@ const firebaseConfig: FirebaseAppConfig = {
   storageBucket: 'pathshala-9a06d.appspot.com',
   messagingSenderId: '1079147185431',
   appId: '1:1079147185431:web:defd50ffb1567becf5a352',
-  measurementId: "G-NMX2YFM97C"
+  measurementId: 'G-NMX2YFM97C',
 };
 @NgModule({
   declarations: [
@@ -88,8 +101,13 @@ const firebaseConfig: FirebaseAppConfig = {
     MatDividerModule,
     MatRadioModule,
     MatInputModule,
+    ReactiveFormsModule,
     MatButtonModule,
+    MatSelectModule,
+    MatDialogModule,
+    MatDatepickerModule,
     MatToolbarModule,
+    MatNativeDateModule,
     MatTooltipModule,
     MatIconModule,
     MatListModule,
@@ -109,13 +127,22 @@ const firebaseConfig: FirebaseAppConfig = {
     },
     {
       provide: HAMMER_GESTURE_CONFIG,
-      useClass: GestureConfig,
+      useClass: MyHammerConfig,
+    },
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: { appearance: 'fill' },
     },
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule{
-  constructor(private angularFireMessaging: AngularFireMessaging,private state : StateService , private swUpdate : SwUpdate ,private snackbar: MatSnackBar) {
+export class AppModule {
+  constructor(
+    private angularFireMessaging: AngularFireMessaging,
+    private state: StateService,
+    private swUpdate: SwUpdate,
+    private snackbar: MatSnackBar
+  ) {
     // this.angularFireMessaging.messages.subscribe((_messaging) => {
     //   console.log(_messaging);
     // });
@@ -123,39 +150,49 @@ export class AppModule{
     this.initApp();
     this.Update();
   }
-  initApp(){
-    window['aaaaa'] = this;
-    this.state.defaultErrorHandler((error)=>{
-      if(environment.production == false){
+  initApp() {
+    // window['aaaaa'] = this;
+    this.state.defaultErrorHandler((error) => {
+      if (environment.production === false) {
         console.log(error);
       }
     });
   }
-  initFirebase(){
+  initFirebase() {
     this.angularFireMessaging
       .usePublicVapidKey(
         'BD6MvUZOOe62tjGvUJBcj3q06855aoh4P9FBGqP63jsuNmzMmp4amIjsGq1K3iTJvqm1P_rnTul3aBx-VH76YQw'
       )
       .then(() => {
-        this.angularFireMessaging.getToken.subscribe(console.log,console.log);
+        this.angularFireMessaging.getToken.subscribe(console.log, console.log);
       });
   }
-  Update() :void{
+  Update(): void {
     if (this.swUpdate.isEnabled) {
-      this.swUpdate.available
-        .subscribe(() => {
-          this.swUpdate.available.subscribe(evt =>{
-            const snack = this.snackbar.open('Update Available', 'Reload',{duration:3000});
-            snack
-              .onAction()
-              .subscribe(() => {
-                snack.dismiss();
-                // window.location.reload();
-              });
+      this.swUpdate.available.subscribe(() => {
+        this.swUpdate.available.subscribe((evt) => {
+          const snack = this.snackbar.open('Update Available', 'Reload', {
+            duration: 3000,
+          });
+          snack.onAction().subscribe(() => {
+            snack.dismiss();
+            // window.location.reload();
           });
         });
-    }else{
+      });
+    } else {
       console.log('not enabled');
     }
+    // angularFireMessaging
+    //   .usePublicVapidKey(
+    //     'BD6MvUZOOe62tjGvUJBcj3q06855aoh4P9FBGqP63jsuNmzMmp4amIjsGq1K3iTJvqm1P_rnTul3aBx-VH76YQw'
+    //   )
+    //   .then(() => {
+    //     // angularFireMessaging.getToken.subscribe(console.log);
+    //   });
+    // window['a'] = firebase.initializeApp(firebaseConfig);
+    console.log('executed');
+    // Firemessages.
+    // window['aa'] = angularFireMessaging;
   }
 }
