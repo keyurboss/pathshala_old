@@ -99,7 +99,10 @@ export class BasicFunctionsService {
     });
   }
   clearhistoryGotoLink(url = '/', fullUrl = false) {
-    const locationToGO = location.origin + url;
+    let locationToGO = location.origin + url;
+    if (fullUrl) {
+      locationToGO = url;
+    }
     setTimeout(() => {
       console.log(locationToGO);
       location.replace(locationToGO);

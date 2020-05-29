@@ -9,9 +9,9 @@ import { LostPagesComponent } from './lost-pages/lost-pages.component';
 import { TabsComponent } from './tabs/tabs.component';
 import { BasicFunctionsService } from './services/basic-functions.service';
 import { logincheck } from './resolveFun';
-import {environment} from '../environments/environment';
+import { environment } from '../environments/environment';
 import { LoginComponent } from './login/login.component';
-const state :Ng2StateDeclaration[] = [
+const state: Ng2StateDeclaration[] = [
   {
     name: 'home',
     url: '/home',
@@ -32,19 +32,19 @@ const state :Ng2StateDeclaration[] = [
       {
         token: 'person',
         deps: [Transition, StateService, BasicFunctionsService],
-        resolveFn: (traL:Transition)=>{
+        resolveFn: (traL: Transition) => {
           console.log(traL.from());
           console.log(traL.to());
           console.log(traL);
           return true;
         },
       },
-    ]
+    ],
   },
   {
-    name:'default',
-    url:'',
-    redirectTo:'home'
+    name: 'default',
+    url: '',
+    redirectTo: 'home',
   },
   {
     name: 'login',
@@ -52,10 +52,9 @@ const state :Ng2StateDeclaration[] = [
     component: LoginComponent,
   },
 ];
-const defaultConfigFun = function (router: UIRouter, state: StateService) {
+const defaultConfigFun = (router: UIRouter, statess: StateService) => {
   router.urlService.rules.initial({ state: 'home' });
   router.urlService.rules.otherwise({ state: '404' });
-  
 };
 export const Routes = UIRouterModule.forRoot({
   states: state,

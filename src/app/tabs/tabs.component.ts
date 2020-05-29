@@ -7,11 +7,11 @@ import { StateService } from '@uirouter/core';
   styleUrls: ['./tabs.component.scss'],
 })
 export class TabsComponent implements OnInit {
-  tab_num = 3;
+  tabNum = 3;
   swal = GlobalVariables.swal;
   selected = 2;
   SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight' };
-  constructor(private state:StateService) {}
+  constructor(private state: StateService) {}
 
   ngOnInit(): void {}
   swipe(eType) {
@@ -19,34 +19,36 @@ export class TabsComponent implements OnInit {
       this.selected--;
     } else if (
       eType === this.SWIPE_ACTION.LEFT &&
-      this.selected < this.tab_num
+      this.selected < this.tabNum
     ) {
       this.selected++;
     }
   }
   logout() {
-    this.swal.fire({
-      title: 'Are you sure?',
-      text: "You want to logout?",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Log out',
-      cancelButtonText:"cancel"
-    }).then((result)=>{
-      localStorage.clear();
-      setTimeout(()=>{
-        location.replace(location.origin);
-      },1000);
-      if(result.value){
-        this.swal.fire({
-          icon: 'success',
-          title: 'Logged Out',
-          showConfirmButton: false,
-          timer: 1500
-        });
-      }
-    });
+    this.swal
+      .fire({
+        title: 'Are you sure?',
+        text: 'You want to logout?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Log out',
+        cancelButtonText: 'cancel',
+      })
+      .then((result) => {
+        localStorage.clear();
+        setTimeout(() => {
+          location.replace(location.origin);
+        }, 1000);
+        if (result.value) {
+          this.swal.fire({
+            icon: 'success',
+            title: 'Logged Out',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
   }
 }

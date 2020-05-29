@@ -8,8 +8,8 @@ export function logincheck(
   return new Promise((resolve, reject) => {
     basic
       .isLogin()
-      .then(()=>{
-          resolve();
+      .then(() => {
+        resolve();
       })
       .catch(() => {
         setTimeout(() => {
