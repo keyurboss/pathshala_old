@@ -27,3 +27,12 @@
 .example-radio-button {
   margin: 5px;
 }
+.flex-center{
+  display: flex;
+  justify-content: center;
+}
+.submission{
+  &-title{
+    margin-top: 20px;
+  }
+}

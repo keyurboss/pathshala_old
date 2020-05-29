@@ -26,13 +26,17 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { LoginComponent } from './login/login.component';
-import { FormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PointsOverViewComponent } from './points-over-view/points-over-view.component';
 import { SubmitPointsComponent } from './submit-points/submit-points.component';
 import { SubmitDialogComponent } from './submit-points/submit-dialogpopup.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSelectModule } from '@angular/material/select';
 import { environment } from '../environments/environment';
-import * as firebase from 'firebase/app';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import 'firebase/messaging';
 
 import { AngularFireModule, FirebaseAppConfig } from '@angular/fire';
@@ -44,7 +48,7 @@ import {
 
 import { from } from 'rxjs';
 export class MyHammerConfig extends HammerGestureConfig {
-  overrides = <any>{
+  overrides = {
     // override hammerjs default configuration
     swipe: { direction: 6 },
     // touchAction:'auto'
@@ -83,8 +87,13 @@ const firebaseConfig: FirebaseAppConfig = {
     MatDividerModule,
     MatRadioModule,
     MatInputModule,
+    ReactiveFormsModule,
     MatButtonModule,
+    MatSelectModule,
+    MatDialogModule,
+    MatDatepickerModule,
     MatToolbarModule,
+    MatNativeDateModule,
     MatTooltipModule,
     MatIconModule,
     MatListModule,
@@ -104,7 +113,11 @@ const firebaseConfig: FirebaseAppConfig = {
     },
     {
       provide: HAMMER_GESTURE_CONFIG,
-      useClass: GestureConfig,
+      useClass: MyHammerConfig,
+    },
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: { appearance: 'fill' },
     },
   ],
   bootstrap: [AppComponent],
@@ -114,16 +127,16 @@ export class AppModule {
     // this.angularFireMessaging.messages.subscribe((_messaging) => {
     //   console.log(_messaging);
     // });
-    angularFireMessaging
-      .usePublicVapidKey(
-        'BD6MvUZOOe62tjGvUJBcj3q06855aoh4P9FBGqP63jsuNmzMmp4amIjsGq1K3iTJvqm1P_rnTul3aBx-VH76YQw'
-      )
-      .then(() => {
-        angularFireMessaging.getToken.subscribe(console.log);
-      });
-    window['a'] = firebase.initializeApp(firebaseConfig);
+    // angularFireMessaging
+    //   .usePublicVapidKey(
+    //     'BD6MvUZOOe62tjGvUJBcj3q06855aoh4P9FBGqP63jsuNmzMmp4amIjsGq1K3iTJvqm1P_rnTul3aBx-VH76YQw'
+    //   )
+    //   .then(() => {
+    //     // angularFireMessaging.getToken.subscribe(console.log);
+    //   });
+    // window['a'] = firebase.initializeApp(firebaseConfig);
     console.log('executed');
     // Firemessages.
-    window['aa'] = angularFireMessaging;
+    // window['aa'] = angularFireMessaging;
   }
 }

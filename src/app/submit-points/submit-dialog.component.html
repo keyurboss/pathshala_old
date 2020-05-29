@@ -1,0 +1,29 @@
+<div class="main-container">
+  <div class="flex-center submission-title">
+    <h1>Daily Points Submitions</h1>
+  </div>
+  <div class="flex-center">
+    <mat-form-field appearance="outline" color="primary">
+      <mat-label>Please Select Date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="dp3"
+        [min]="minDate"
+        [max]="maxDate"
+        [formControl]="date"
+        disabled
+      />
+      <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+      <mat-datepicker #dp3 touchUi disabled="false"></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-divider></mat-divider>
+    <mat-form-field appearance="outline" color="primary">
+      <mat-label>Gatha type</mat-label>
+      <mat-select [(value)]="selectedGath">
+        <mat-option [value]="option.value" *ngFor="let option of gathatype">{{ option.viewValue }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>

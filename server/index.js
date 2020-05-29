@@ -4,12 +4,12 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const router = express.Router();
 const loginRouter = express.Router();
-const fs = require('fs');
-const http = require('http');
-const https = require('https');
-const privateKey  = fs.readFileSync(__dirname+'/certs/server.key', 'utf8');
-const certificate = fs.readFileSync(__dirname+'/certs/server.crt', 'utf8');
-const credentials = {key: privateKey, cert: certificate};
+const fs = require("fs");
+const http = require("http");
+const https = require("https");
+const privateKey = fs.readFileSync(__dirname + "/certs/server.key", "utf8");
+const certificate = fs.readFileSync(__dirname + "/certs/server.crt", "utf8");
+const credentials = { key: privateKey, cert: certificate };
 const cors = require("cors");
 const QueryBuilder = require("node-querybuilder");
 const settings = {
@@ -73,11 +73,15 @@ const gerUserDetails = function (params) {
         "ub.city",
         "ub.other as user_data",
         "sd.sangh_name",
-      ]).from("user_basic as ub").join("users as us", "us.user_id = ub.user_id", "left");
-      
+      ])
+        .from("user_basic as ub")
+        .join("users as us", "us.user_id = ub.user_id", "left");
+
       if (params.id && params.password) {
-        db.where("us.unique_id", params.id)
-          .where("us.password", params.password)
+        db.where("us.unique_id", params.id).where(
+          "us.password",
+          params.password
+        );
       }
       if (params.user_id) {
         db.where("ub,user_id", params.user_id);
@@ -107,10 +111,9 @@ const addRefreshTokenandMakeEntry = function (user, token) {
   });
 };
 app.use("/api", router);
-app.use('/test',(req,res)=>{
-  res.send({data:"success"});
+app.use("/test", (req, res) => {
+  res.send({ data: "success" });
 });
-app.use("/loginserver", loginRouter);
 loginRouter.post("/login", (req, res) => {
   let data = req.body;
   if (
@@ -146,7 +149,7 @@ loginRouter.post("/refreshaceesstoken", (req, res) => {
   if (data.token && typeof data.token !== "undefined") {
     jwt.verify(data.token, token.refreshToken, (err, user) => {
       if (err) return res.sendStatus(403);
-      gerUserDetails(user).then(([err,result])=>{
+      gerUserDetails(user).then(([err, result]) => {
         if (err) return res.sendStatus(403);
         if (result.length > 0) {
           res.locals = {
@@ -165,14 +168,19 @@ loginRouter.post("/refreshaceesstoken", (req, res) => {
     res.sendStatus(401);
   }
 });
+app.use("/loginserver", loginRouter);
+
 router.use(authenticateToken);
-router.all('/islogin',(req,res)=>{
+router.all("/islogin", (req, res) => {
   res.send({
-    success:1
+    success: 1,
   });
 });
 router.post("/mydetails", (req, res) => {
-  res.send({success:1,data:req.user});
+  res.send({ success: 1, data: req.user });
+});
+app.use("*", (req, res) => {
+  res.sendStatus(404);
 });
 const httpServer = http.createServer(app);
 const httpsServer = https.createServer(credentials, app);
