@@ -15,7 +15,9 @@
           "/*.js"
         ]
       }
-    }, {
+
+    },
+    {
       "name": "assets",
       "installMode": "lazy",
       "updateMode": "prefetch",
@@ -25,6 +27,19 @@
           "/*.(eot|svg|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)"
         ]
       }
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "details",
+      "cacheConfig": {
+        "maxAge": "1d",
+        "maxSize": 100,
+        "strategy": "freshness",
+        "timeout": "10s"
+      },
+      "urls": ["**/*"],
+      "version": 1
     }
   ]
 }

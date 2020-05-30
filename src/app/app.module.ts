@@ -141,7 +141,8 @@ export class AppModule {
     private angularFireMessaging: AngularFireMessaging,
     private state: StateService,
     private swUpdate: SwUpdate,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    private analytics: AngularFireAnalytics
   ) {
     // this.angularFireMessaging.messages.subscribe((_messaging) => {
     //   console.log(_messaging);
@@ -166,6 +167,26 @@ export class AppModule {
       .then(() => {
         this.angularFireMessaging.getToken.subscribe(console.log, console.log);
       });
+    this.analytics.logEvent('start', { test: true });
+    this.analytics.logEvent('select_content', {
+      content_type: 'image',
+      content_id: 'P12453',
+      items: [{ name: 'Kittens' }],
+    });
+  }
+  cachedAnalytics() {
+    caches.open('analytics').then((ca) => {
+      ca.keys().then((keys) => {
+        keys.forEach((key) => {
+          caches.match(key).then((res) => {
+            res.json().then((d) => {
+              this.analytics.logEvent(d.event, d.data);
+              ca.delete(key);
+            });
+          });
+        });
+      });
+    });
   }
   Update(): void {
     if (this.swUpdate.isEnabled) {

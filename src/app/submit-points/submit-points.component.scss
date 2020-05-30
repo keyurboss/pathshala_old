@@ -39,11 +39,10 @@
 .gatha-div {
   &-container{
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
   }
   &-margin {
     margin-top: 2vh;
-    margin-left: 2vh;
   }
   &-discription{
     width: 100%;

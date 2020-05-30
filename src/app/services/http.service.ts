@@ -17,11 +17,13 @@ export class HttpService {
     this.apiUrl = variabbles.getApiUrl();
     this.loginUrl = variabbles.getLoginUrl();
   }
-  private http(url, type: 'get' | 'post', params = {}) {
+  private http(url, type: 'get' | 'post', paramss = {}) {
     if (type === 'get') {
-      return this.httpclient.get(url, params);
+      return this.httpclient.get(url, {
+        params: paramss,
+      });
     } else {
-      return this.httpclient.post(url, params);
+      return this.httpclient.post(url, paramss);
     }
   }
   getApiHttp(url: string, type: 'get' | 'post', params = {}): Promise<any> {

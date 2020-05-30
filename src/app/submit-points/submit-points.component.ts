@@ -26,11 +26,6 @@ export class SubmitPointsComponent implements OnInit {
 
   submitbuttonClicked() {
     if (this.selected !== false) {
-      // this.swal.fire(
-      //   'Warning',
-      //   'Please Select Point Type' + this.selected,
-      //   'warning'
-      // );
       const dialogRef = this.dialog.open(SubmitDialogComponent, {
         direction: 'ltr',
         position: {

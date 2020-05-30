@@ -41,35 +41,21 @@ messaging.setBackgroundMessageHandler(function (payload) {
     notificationOptions
   );
 });
-async function notificationCloseAnalytics(event, details) {
-  if(typeof details === 'string'){
-    details = JSON.parse(details);
+async function notificationCloseAnalytics(event, details={}) {
+  if (typeof details === 'object') {
+    details = JSON.stringify({event:event,data: details}, null, 2);
   }
-  Object.keys(details).forEach((key)=>{
-    if(typeof details[key] === 'object'){
-      details[key] = JSON.stringify(details[key]);
-    }
-    // details.index = value;
-  });
+  let blob = new Blob([details], {type : 'application/json'});
+  const response = new Response(blob,{ "status" : 200});
+  const request = new Request('/analytics/'+ Date.now());
   let aa = await caches.open("analytics");
-  let url;
-  if (location.protocol === "https:") {
-    url = "https://server.rpsoftech.xyz:3030";
-  } else {
-    url = "http://localhost:3030";
-  }
-  await aa.add(
-    url + "/tojson/" + event + "?" + new URLSearchParams(details).toString()
-  );
+  await aa.put(request,response);
   return true;
 }
 self.addEventListener("notificationclose", function (event) {
-  const dismissedNotification = event.notification;
-  // console.log(dismissedNotification);
-  // console.log(event);
   const promiseChain = notificationCloseAnalytics(
     "notificationclose",
-    JSON.stringify(event.notification.data)
+    event.notification.data
   );
   event.waitUntil(promiseChain);
 });
