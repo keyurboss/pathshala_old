@@ -54,7 +54,6 @@ import {
   AngularFireMessaging,
 } from '@angular/fire/messaging';
 
-import { from } from 'rxjs';
 import { StateService } from '@uirouter/core';
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {

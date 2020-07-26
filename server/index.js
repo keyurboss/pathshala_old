@@ -12,11 +12,13 @@ const certificate = fs.readFileSync(__dirname + "/certs/server.crt", "utf8");
 const credentials = { key: privateKey, cert: certificate };
 const cors = require("cors");
 const QueryBuilder = require("node-querybuilder");
+const testPOOL = require("./DB/builder/pool").Pool;
 const settings = {
   host: "server.rpsoftech.xyz",
   user: "pathshala_server",
   password: "JtYd#e$r%10PgRr",
   database: "pathshala",
+  connectionLimit: 5,
   // version:"5.7.29"
 };
 // let con = mysql.createConnection(settings);
@@ -24,7 +26,8 @@ const settings = {
 //   if (err) console.log(err);
 //   // console.log("Connected!");
 // });
-const pool = new QueryBuilder(settings, "mysql", "pool");
+const pool = new testPOOL(settings);
+//  new QueryBuilder(settings, "mysql", "pool");
 //escape to escape
 const token = {
   accessTokenkey:
@@ -61,53 +64,42 @@ function generateAccessToken(user) {
 function generateRefreshToken(user) {
   return jwt.sign(user, token.refreshToken);
 }
-const gerUserDetails = function (params) {
-  return new Promise((resolve, reject) => {
-    pool.get_connection((db) => {
-      db.select([
-        "us.unique_id",
-        "ub.name",
-        "ub.gender",
-        "ub.mobile_no",
-        "ub.dob",
-        "ub.city",
-        "ub.other as user_data",
-        "sd.sangh_name",
-      ])
-        .from("user_basic as ub")
-        .join("users as us", "us.user_id = ub.user_id", "left");
+const gerUserDetails = async function (params) {
+  const db = await pool.get_connection();
+  db.select([
+    "us.user_id",
+    "us.unique_id",
+    "ub.name",
+    "ub.gender",
+    "ub.mobile_no",
+    "ub.dob",
+    "ub.city",
+    "ub.other as user_data",
+    "sd.sangh_name",
+  ]);
+  db.from("user_basic as ub");
+  db.join("users as us", "us.user_id = ub.user_id", "left");
 
-      if (params.id && params.password) {
-        db.where("us.unique_id", params.id).where(
-          "us.password",
-          params.password
-        );
-      }
-      if (params.user_id) {
-        db.where("ub,user_id", params.user_id);
-      }
-      db.join("sangh_details as sd", "sd.sangh_id = ub.sangh", "left");
-
-      db.get((err, result) => {
-        db.release();
-        resolve([err, result]);
-      });
-    });
+  if (params.id && params.password) {
+    db.where("us.unique_id", params.id).where("us.password", params.password);
+  }
+  if (params.user_id) {
+    db.where("ub,user_id", params.user_id);
+  }
+  db.join("sangh_details as sd", "sd.sangh_id = ub.sangh", "left");
+  return await db.get().finally(() => {
+    db.release();
   });
 };
-const addRefreshTokenandMakeEntry = function (user, token) {
-  pool.get_connection((qb) => {
-    qb.insert(
-      "jwt_tokens",
-      {
-        user_id: user.user_id,
-        token: token,
-        created_at: Math.floor(Date.now() / 1000),
-      },
-      (err, res) => {
-        qb.release();
-      }
-    );
+const addRefreshTokenandMakeEntry = async function (user, token) {
+  pool.get_connection().then((qb) => {
+    qb.insert("jwt_tokens", {
+      user_id: user.user_id,
+      token: token,
+      created_at: Math.floor(Date.now() / 1000),
+    }).then(() => {
+      qb.release();
+    });
   });
 };
 app.use("/api", router);
@@ -116,28 +108,25 @@ app.use("/test", (req, res) => {
 });
 loginRouter.post("/login", (req, res) => {
   let data = req.body;
-  if (
-    data.id &&
-    typeof data.id !== "undefined" &&
-    data.password &&
-    typeof data.password !== "undefined"
-  ) {
-    gerUserDetails(data).then(([err, result]) => {
-      if (err) res.send({ success: 0, error: err });
-      if (result.length > 0) {
-        res.locals = {
-          success: 1,
-          data: result[0],
-        };
-        let user = JSON.parse(JSON.stringify(result[0]));
-        res.locals.data.accessToken = generateAccessToken(user);
-        res.locals.data.refreshToken = generateRefreshToken(user);
-        addRefreshTokenandMakeEntry(user, res.locals.data.refreshToken);
-        res.send(res.locals);
-      } else {
-        res.send({ success: 0 });
-      }
-    });
+  if (data.id && data.password) {
+    console.log("sdpfjsdfj");
+    gerUserDetails(data)
+      .then((result) => {
+        if (result.length > 0) {
+          res.locals = {
+            success: 1,
+            data: result[0],
+          };
+          let user = result[0];
+          res.locals.data.accessToken = generateAccessToken(user);
+          res.locals.data.refreshToken = generateRefreshToken(user);
+          addRefreshTokenandMakeEntry(user, res.locals.data.refreshToken);
+          res.send(res.locals);
+        } else {
+          res.send({ success: 0 });
+        }
+      })
+      .catch((err) => res.send({ success: 0, error: err }));
   } else {
     res.send({
       success: 0,
@@ -169,7 +158,7 @@ loginRouter.get("/refreshaceesstoken", (req, res) => {
   }
 });
 app.use("/loginserver", loginRouter);
-app.use('/tojson/*',(req,res)=>{
+app.use("/tojson/*", (req, res) => {
   res.send(req.query);
 });
 router.use(authenticateToken);
@@ -178,17 +167,28 @@ router.get("/islogin", (req, res) => {
     success: 1,
   });
 });
-
 router.get("/mydetails", (req, res) => {
   res.send({ success: 1, data: req.user });
 });
-app.use("*", (req, res) => {
+router.post("/submit", async (req, res) => {
+  const data = req.body;
+  if (data.year && data.month && data.day && point_type && data.details) {
+    const db = await pool.get_connection();
+    try {
+    } catch (e) {
+      db.release();
+    }
+  } else {
+    res.sendStatus(400);
+  }
+});
+app.use("**/*", (req, res) => {
   res.sendStatus(404);
 });
 const httpServer = http.createServer(app);
 const httpsServer = https.createServer(credentials, app);
 
-httpServer.listen(3030);
+httpServer.listen(3000);
 let a = httpsServer.listen(3443);
 // a.on('secureConnection',console.log);
 // app.listen(process.env.PORT || 3030, () => {
