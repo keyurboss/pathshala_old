@@ -5,11 +5,10 @@ import {
   HammerModule,
 } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, Injectable } from '@angular/core';
 import { AppComponent } from './app.component';
 import { TokenInterceptor } from './auth/httpIntercepter.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { GestureConfig } from '@angular/material/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ProfileComponent } from './profile/profile.component';
 import { LostPagesComponent } from './lost-pages/lost-pages.component';
@@ -57,6 +56,7 @@ import {
 
 import { from } from 'rxjs';
 import { StateService } from '@uirouter/core';
+@Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = {
     // override hammerjs default configuration
