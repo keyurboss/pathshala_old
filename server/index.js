@@ -11,7 +11,6 @@ const privateKey = fs.readFileSync(__dirname + "/certs/server.key", "utf8");
 const certificate = fs.readFileSync(__dirname + "/certs/server.crt", "utf8");
 const credentials = { key: privateKey, cert: certificate };
 const cors = require("cors");
-const QueryBuilder = require("node-querybuilder");
 const testPOOL = require("./DB/builder/pool").Pool;
 const settings = {
   host: "server.rpsoftech.xyz",
@@ -50,9 +49,6 @@ const authenticateToken = function (req, res, next) {
 
   jwt.verify(token1, token.accessTokenkey, (err, user) => {
     if (err) return res.sendStatus(403);
-    if (user.user_rights && typeof user.user_rights == "string") {
-      user.user_rights = JSON.parse(user.user_rights);
-    }
     req.user = user;
     res.locals = {};
     next();
@@ -109,7 +105,6 @@ app.use("/test", (req, res) => {
 loginRouter.post("/login", (req, res) => {
   let data = req.body;
   if (data.id && data.password) {
-    console.log("sdpfjsdfj");
     gerUserDetails(data)
       .then((result) => {
         if (result.length > 0) {
@@ -172,11 +167,46 @@ router.get("/mydetails", (req, res) => {
 });
 router.post("/submit", async (req, res) => {
   const data = req.body;
-  if (data.year && data.month && data.day && point_type && data.details) {
+  if (data.year && data.month && data.day && data.point_type && data.details) {
     const db = await pool.get_connection();
     try {
+      const time = Math.floor(Date.now() / 1000);
+      const insert_data = {
+        user_id: req.user.user_id,
+        day: data.day,
+        month: data.month,
+        year: data.year,
+        point_type: data.point_type,
+        status: 2,
+        points: 0,
+        details: data.details,
+        created_on: time,
+        edited_on: time,
+      };
+      let result;
+      if (data.update && data.update === true && data.id) {
+        delete insert_data.created_on;
+        result = await db.update("points_main", insert_data, {
+          user_id: req.user.user_id,
+          status: 2,
+          id: data.id,
+        });
+      } else {
+        result = await db.insert("points_main", insert_data, true);
+      }
+      db.release();
+      if (result.affectedRows && result.affectedRows > 0) {
+        res.send({
+          success: 1,
+        });
+      } else {
+        res.send({
+          success: 0,
+        });
+      }
     } catch (e) {
       db.release();
+      res.sendStatus(400);
     }
   } else {
     res.sendStatus(400);
