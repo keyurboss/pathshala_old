@@ -18,7 +18,7 @@
         [formControl]="date"
         (click)="dp3.open()"
         (focus)="dp3.open()"
-         (dateChange)="dateChange()"
+        (dateChange)="dateChange()"
         disabled
       />
       <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
@@ -47,7 +47,7 @@
       <div class="gatha-div-margin">
         <mat-form-field appearance="outline" color="primary">
           <mat-label>Number of Gatha</mat-label>
-          <input matInput type="number" [(ngModel)]="gathaSubmit.noGatha" />
+          <input matInput type="number" [(ngModel)]="gathaSubmit.no_gatha" />
         </mat-form-field>
       </div>
     </div>
@@ -71,7 +71,7 @@
       <mat-icon>add</mat-icon>
       <span>Add</span>
     </button>
-    <button mat-raised-button color="primary">
+    <button mat-raised-button color="primary" (click)="submit()">
       <span>Submit</span>
     </button>
   </div>

@@ -10,7 +10,7 @@ export class HttpService {
   private apiUrl;
   private loginUrl;
   constructor(
-    private variabbles: Variables,
+    variabbles: Variables,
     private httpclient: HttpClient,
     private state: StateService
   ) {

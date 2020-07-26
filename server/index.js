@@ -18,6 +18,7 @@ const settings = {
   password: "JtYd#e$r%10PgRr",
   database: "pathshala",
   connectionLimit: 5,
+  idleTimeout: 10,
   // version:"5.7.29"
 };
 // let con = mysql.createConnection(settings);
@@ -35,6 +36,7 @@ const token = {
     "2a442f557658ce7cd403c6bfd3ee68b4ec3a9d16898d78d7dd9a54b7af9178ce97e502b0dc343882bb744b3379a2e75965ab469cb6e21a76387ee35e13ffb299",
 };
 const jwt = require("jsonwebtoken");
+const e = require("express");
 
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -98,6 +100,76 @@ const addRefreshTokenandMakeEntry = async function (user, token) {
     });
   });
 };
+async function FetchPoints(data) {
+  const db = await pool.get_connection();
+  try {
+    db.select(["user_id"]);
+    if (data.group_by) {
+      db.select("SUM(points) as point", false);
+      db.group_by("user_id");
+      if (data.group_by.month) {
+        db.group_by("month");
+        db.select("month");
+      }
+      if (data.group_by.year) {
+        db.group_by("year");
+        db.select("year");
+      }
+      if (data.group_by.status) {
+        db.group_by("status");
+        db.select("status");
+      }
+    } else {
+      db.select([
+        "day",
+        "month",
+        "year",
+        "point_type",
+        "status",
+        "pm.details",
+        "points",
+      ]);
+    }
+    if (data.order_by) {
+      if(data.order_by === 'desc'){
+        db.order_by('timestamp','desc')
+      }else{
+        db.order_by('timestamp')
+      }
+      if(data.group_by){
+        db.select('MAX(timestamp) as timestamp',false);
+      }
+    }
+    if (typeof data.nolimit === "undefined") {
+      db.limit(data.limit, data.limit * (data.stream - 1));
+    }
+    if (data.status) {
+      db.where("pm.status", db.status);
+    }
+    if (data.user_id) {
+      db.where("pm.user_id", data.user_id);
+    }
+    if (data.month) {
+      db.where("pm.month", data.month);
+    }
+    if (data.day) {
+      db.where("pm.day", data.day);
+    }
+    if (data.year) {
+      db.where("pm.year", data.year);
+    }
+    if (data.point_type) {
+      db.where("pm.point_type", data.point_type);
+    }
+    return await db.get("points_main as pm").finally(() => {
+      db.release();
+    });
+  } catch (e) {
+    console.log(e);
+    db.release();
+    throw e;
+  }
+}
 app.use("/api", router);
 app.use("/test", (req, res) => {
   res.send({ data: "success" });
@@ -167,7 +239,7 @@ router.get("/mydetails", (req, res) => {
 });
 router.post("/submit", async (req, res) => {
   const data = req.body;
-  if (data.year && data.month && data.day && data.point_type && data.details) {
+  if (data.year && data.month && data.day && data.point_type && data.details && data.timestamp) {
     const db = await pool.get_connection();
     try {
       const time = Math.floor(Date.now() / 1000);
@@ -179,6 +251,7 @@ router.post("/submit", async (req, res) => {
         point_type: data.point_type,
         status: 2,
         points: 0,
+        timestamp:data.timestamp,
         details: data.details,
         created_on: time,
         edited_on: time,
@@ -186,6 +259,10 @@ router.post("/submit", async (req, res) => {
       let result;
       if (data.update && data.update === true && data.id) {
         delete insert_data.created_on;
+        delete insert_data.month;
+        delete insert_data.day;
+        delete insert_data.year;
+        delete insert_data.timestamp;
         result = await db.update("points_main", insert_data, {
           user_id: req.user.user_id,
           status: 2,
@@ -210,6 +287,24 @@ router.post("/submit", async (req, res) => {
     }
   } else {
     res.sendStatus(400);
+  }
+});
+router.get("/mypoints", async (req, res) => {
+  try {
+    let data = req.query;
+    if (!data.nolimit && (!data.stream || !data.limit)) {
+      throw new Error("Please send limit and stream");
+    }
+    if (data.group_by && typeof data.group_by === "string") {
+      data.group_by = JSON.parse(data.group_by);
+    }
+    const result = await FetchPoints(data);
+    res.send({
+      success: 1,
+      data: result,
+    });
+  } catch (e) {
+    res.status(400).send(e.message);
   }
 });
 app.use("**/*", (req, res) => {

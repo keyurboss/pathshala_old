@@ -52,7 +52,12 @@ export class BasicFunctionsService {
               dob.getDate() + '/' + dob.getMonth() + '/' + dob.getFullYear(),
             City: data.data.city,
           };
-          const extraData = JSON.parse(data.data.user_data);
+          let extraData;
+          if (typeof data.data.user_data === 'string') {
+            extraData = JSON.parse(data.data.user_data);
+          }else{
+            extraData = data.data.user_data;
+          }
           if (extraData.alternate_no) {
             b['Alternate No.'] = extraData.alternate_no;
           }

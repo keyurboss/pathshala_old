@@ -9,13 +9,14 @@ export class Variables {
   constructor() {
     let protocol = 'http:';
     let url = location.hostname;
-    let port = '3030';
+    let port = '3000';
     if (location.protocol === 'https:' && environment.production) {
       protocol = 'https:';
       port = '3443';
     }
     if (environment.production) {
       url = 'server.rpsoftech.xyz';
+      port = '3030';
     }
     this.baseUrl = protocol + '//' + url + ':' + port;
   }
