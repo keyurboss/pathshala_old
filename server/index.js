@@ -36,7 +36,6 @@ const token = {
     "2a442f557658ce7cd403c6bfd3ee68b4ec3a9d16898d78d7dd9a54b7af9178ce97e502b0dc343882bb744b3379a2e75965ab469cb6e21a76387ee35e13ffb299",
 };
 const jwt = require("jsonwebtoken");
-const e = require("express");
 
 app.use(bodyParser.json());
 app.use(cookieParser());

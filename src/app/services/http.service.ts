@@ -19,7 +19,7 @@ export class HttpService {
   }
   private http(url, type: 'get' | 'post', paramss = {}) {
     if (type === 'get') {
-      return this.httpclient.get(url, {
+      return this.httpclient.get<any>(url, {
         params: paramss,
       });
     } else {
