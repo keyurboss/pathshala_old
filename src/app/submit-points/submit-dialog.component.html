@@ -35,6 +35,22 @@
           color="primary"
         >
           <mat-label>Gatha type</mat-label>
+          <mat-select [disabled]="true" [(value)]="gathaSubmit.selectedGath">
+            <mat-option
+              [value]="option.value"
+              *ngFor="let option of gathatype"
+              >{{ option.viewValue }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="gatha-div-margin">
+        <mat-form-field
+          style="width: 16vh;"
+          appearance="outline"
+          color="primary"
+        >
+          <mat-label>Gatha type</mat-label>
           <mat-select [(value)]="gathaSubmit.selectedGath">
             <mat-option
               [value]="option.value"
