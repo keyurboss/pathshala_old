@@ -15,12 +15,14 @@ export class Variables {
     }
     if (location.protocol === 'https:' && environment.production) {
       protocol = 'https:';
-      port = '3443';
     }
     if (environment.production) {
-      url = 'server.rpsoftech.xyz';
+      url = 'pathshalaserver.rpsoftech.net';
     }
     this.baseUrl = protocol + '//' + url + ':' + port;
+    if (environment.production) {
+      this.baseUrl = protocol + '//' + url;
+    }
   }
   getBaseUrl(): string {
     return this.baseUrl;
