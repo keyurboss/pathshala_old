@@ -25,11 +25,11 @@
       Year
     </button>
   </div>
-  <div [hidden]="tableData.length === 0">
+  <div *ngIf="tableData.length > 0" class="table">
     <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
       <thead>
         <tr>
-          <th class="mdl-data-table__cell--non-numeric">{{header}}</th>
+          <th class="mdl-data-table__cell--non-numeric">{{ header }}</th>
           <th>Approved</th>
           <th>Rejected</th>
           <th>Total</th>
@@ -37,15 +37,32 @@
       </thead>
       <tbody>
         <tr *ngFor="let a of tableData">
-          <td class="mdl-data-table__cell--non-numeric">{{a.date}}</td>
-          <td>{{a.approved}}</td>
-          <td>{{a.rejected}}</td>
-          <td>{{a.total}}</td>
+          <td class="mdl-data-table__cell--non-numeric">
+            {{ a.timestamp | date: format }}
+          </td>
+          <td>{{ a.approved }}</td>
+          <td>{{ a.rejected }}</td>
+          <td>{{ a.total }}</td>
         </tr>
       </tbody>
     </table>
   </div>
-<div class="loading" *ngIf="isloading">
-  <app-loading></app-loading>
-</div>
+  <div *ngIf="tableData.length > 0" class="viewmore">
+    <div [hidden]="streambroken === false">
+      All Data Has Been Loaded
+    </div>
+    <div [hidden]="streambroken === true">
+      <button
+        mat-raised-button
+        color="warn"
+        (click)="viewMore()"
+        [disabled]="streambroken"
+      >
+        View More
+      </button>
+    </div>
+  </div>
+  <div class="loading" *ngIf="isloading">
+    <app-loading></app-loading>
+  </div>
 </div>

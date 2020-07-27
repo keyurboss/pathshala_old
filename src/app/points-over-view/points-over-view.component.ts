@@ -13,17 +13,19 @@ export interface FetchpointRequestInterFace {
         day?: boolean;
       };
   order_by?: true | 'desc';
+  fetch_to_display: boolean;
 }
 export interface TableOfpoints {
-  date: string | number;
   approved: number;
   rejected: number;
   total: number;
-  timestamp: number;
+  timestamp?: number;
 }
 export interface FetchReponse {
   points: number;
   status: number;
+  approved: number;
+  rejected: number;
   day?: number;
   month?: number;
   year?: number;
@@ -38,14 +40,14 @@ export class PointsOverViewComponent implements OnInit {
   selectedbutton: string;
   isloading = false;
   tableData: TableOfpoints[] = [];
+  streambroken = false;
   reqData: FetchpointRequestInterFace = {
     stream: 1,
-    limit: 5,
-    group_by: {
-      status: true,
-    },
+    limit: 3,
+    fetch_to_display: true,
     order_by: 'desc',
   };
+  format = '';
   header = '';
   constructor(private http: HttpService) {
     this.selectedbutton = '';
@@ -65,35 +67,54 @@ export class PointsOverViewComponent implements OnInit {
     this.selectedbutton = a;
     if (a === 'daily') {
       this.header = 'date';
+      this.format = 'd/M/yyyy';
     } else {
       this.header = a;
+      if (a === 'month') {
+        this.format = 'MMM';
+      } else if (a === 'year') {
+        this.format = 'yyyy';
+      }
     }
     this.header = this.header.toUpperCase();
     this.reqData.stream = 1;
     this.reqData.group_by = {
-      status: true,
       month: a === 'month' ? true : false,
       year: a === 'year' ? true : false,
       day: a === 'daily' ? true : false,
     };
-    this.reqData.nolimit = true;
-    this.getData(this.reqData).then((d) => this.proceessData(d));
+    this.tableData = [];
+    this.streambroken = false;
+    this.FetchAndProcessData();
+  }
+  private FetchAndProcessData() {
+    this.isloading = true;
+    this.getData(this.reqData).then((d) => {
+      if (d.length < this.reqData.limit) {
+        console.log(d);
+        this.streambroken = true;
+      }
+      this.proceessData(d);
+    });
   }
   private proceessData(data: FetchReponse[]) {
-    let tempData = {};
-    if (this.selectedbutton === 'daily') {
-      data.forEach((c) => {
-        if (tempData[c.day]) {
-        } else {
-        }
-      });
-    }
+    const tempData: TableOfpoints[] = data.map((c) => {
+      return {
+        approved: c.approved,
+        timestamp: c.timestamp * 1000,
+        rejected: c.rejected,
+        total: c.approved + c.rejected,
+      };
+    });
+    this.tableData = this.tableData.concat(tempData);
+    this.isloading = false;
   }
   viewMore() {
     this.reqData.stream++;
+    this.FetchAndProcessData();
   }
   private getData(data: FetchpointRequestInterFace): Promise<[]> {
-    if (data.group_by) {
+    if (typeof data.group_by === 'object') {
       data.group_by = JSON.stringify(data.group_by);
     }
     return this.http.getApiHttp('/mypoints', 'get', data).then((res) => {
@@ -105,17 +126,3 @@ export class PointsOverViewComponent implements OnInit {
     });
   }
 }
-const monthtocall = {
-  1: 'Jan',
-  2: 'Feb',
-  3: 'Mar',
-  4: 'Apr',
-  5: 'May',
-  6: 'Jun',
-  7: 'Jul',
-  8: 'Aug',
-  9: 'Sep',
-  10: 'Oct',
-  11: 'Nov',
-  12: 'Dec',
-};

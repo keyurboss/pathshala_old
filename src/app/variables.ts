@@ -10,13 +10,15 @@ export class Variables {
     let protocol = 'http:';
     let url = location.hostname;
     let port = '3000';
+    if (environment.production) {
+      port = '3030';
+    }
     if (location.protocol === 'https:' && environment.production) {
       protocol = 'https:';
       port = '3443';
     }
     if (environment.production) {
       url = 'server.rpsoftech.xyz';
-      port = '3030';
     }
     this.baseUrl = protocol + '//' + url + ':' + port;
   }

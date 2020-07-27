@@ -5,6 +5,17 @@
     justify-content: space-evenly;
     margin-top: 18px;
   }
+  .table{
+    display: flex;
+    justify-content: center;
+    margin-top: 18px;
+  }
+  .viewmore{
+    display: flex;
+    margin-top: 10px;
+    width: 100%;
+    justify-content: center;
+  }
 }
 .loading {
   width: 100%;

@@ -122,6 +122,11 @@ async function FetchPoints(data) {
         db.group_by("status");
         db.select("status");
       }
+      if(data.fetch_to_display){
+        db.select("SUM(IF(status = 3,points*1,points*0)) as rejected",false)
+        db.select("SUM(IF(status = 4,points*1,points*0)) as approved",false)
+      }
+      // db.where('','')
     } else {
       db.select([
         "day",
