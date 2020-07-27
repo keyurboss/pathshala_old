@@ -4,12 +4,6 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const router = express.Router();
 const loginRouter = express.Router();
-const fs = require("fs");
-const http = require("http");
-const https = require("https");
-const privateKey = fs.readFileSync(__dirname + "/certs/server.key", "utf8");
-const certificate = fs.readFileSync(__dirname + "/certs/server.crt", "utf8");
-const credentials = { key: privateKey, cert: certificate };
 const cors = require("cors");
 const testPOOL = require("./DB/builder/pool").Pool;
 const settings = {
@@ -325,12 +319,6 @@ router.get("/mypoints", async (req, res) => {
 app.use("**/*", (req, res) => {
   res.sendStatus(404);
 });
-const httpServer = http.createServer(app);
-const httpsServer = https.createServer(credentials, app);
-
-httpServer.listen(3000);
-let a = httpsServer.listen(3443);
-// a.on('secureConnection',console.log);
-// app.listen(process.env.PORT || 3030, () => {
-//   console.log(`App Started on PORT ${process.env.PORT || 3030}`);
-// });
+app.listen(process.env.PORT || 3030, () => {
+  console.log(`App Started on PORT ${process.env.PORT || 3030}`);
+});
