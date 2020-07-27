@@ -1,0 +1,18 @@
+.main {
+  .selection {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    margin-top: 18px;
+  }
+}
+.loading {
+  width: 100%;
+  position: absolute;
+  display: flex;
+  background: #ffffff5c;
+  top: 0;
+  align-items: center;
+  height: 100%;
+  justify-content: center;
+}

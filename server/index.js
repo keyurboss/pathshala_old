@@ -106,6 +106,10 @@ async function FetchPoints(data) {
     if (data.group_by) {
       db.select("SUM(points) as point", false);
       db.group_by("user_id");
+      if (data.group_by.day) {
+        db.group_by("day");
+        db.select("day");
+      }
       if (data.group_by.month) {
         db.group_by("month");
         db.select("month");
@@ -130,13 +134,13 @@ async function FetchPoints(data) {
       ]);
     }
     if (data.order_by) {
-      if(data.order_by === 'desc'){
-        db.order_by('timestamp','desc')
-      }else{
-        db.order_by('timestamp')
+      if (data.order_by === "desc") {
+        db.order_by("timestamp", "desc");
+      } else {
+        db.order_by("timestamp");
       }
-      if(data.group_by){
-        db.select('MAX(timestamp) as timestamp',false);
+      if (data.group_by) {
+        db.select("MAX(timestamp) as timestamp", false);
       }
     }
     if (typeof data.nolimit === "undefined") {
@@ -238,7 +242,14 @@ router.get("/mydetails", (req, res) => {
 });
 router.post("/submit", async (req, res) => {
   const data = req.body;
-  if (data.year && data.month && data.day && data.point_type && data.details && data.timestamp) {
+  if (
+    data.year &&
+    data.month &&
+    data.day &&
+    data.point_type &&
+    data.details &&
+    data.timestamp
+  ) {
     const db = await pool.get_connection();
     try {
       const time = Math.floor(Date.now() / 1000);
@@ -250,7 +261,7 @@ router.post("/submit", async (req, res) => {
         point_type: data.point_type,
         status: 2,
         points: 0,
-        timestamp:data.timestamp,
+        timestamp: data.timestamp,
         details: data.details,
         created_on: time,
         edited_on: time,

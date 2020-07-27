@@ -55,6 +55,7 @@ import {
 } from '@angular/fire/messaging';
 
 import { StateService } from '@uirouter/core';
+import { LoadingComponent } from './loading/loading.component';
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = {
@@ -83,6 +84,7 @@ const firebaseConfig: FirebaseAppConfig = {
     PointsOverViewComponent,
     SubmitPointsComponent,
     SubmitDialogComponent,
+    LoadingComponent,
   ],
   imports: [
     BrowserModule,

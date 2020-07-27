@@ -1,0 +1,51 @@
+<div class="main points">
+  <div class="selection">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="changeSelection('daily')"
+      [disabled]="selectedbutton === 'daily'"
+    >
+      Daily
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="changeSelection('month')"
+      [disabled]="selectedbutton === 'month'"
+    >
+      Month
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="changeSelection('year')"
+      [disabled]="selectedbutton === 'year'"
+    >
+      Year
+    </button>
+  </div>
+  <div [hidden]="tableData.length === 0">
+    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+      <thead>
+        <tr>
+          <th class="mdl-data-table__cell--non-numeric">{{header}}</th>
+          <th>Approved</th>
+          <th>Rejected</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of tableData">
+          <td class="mdl-data-table__cell--non-numeric">{{a.date}}</td>
+          <td>{{a.approved}}</td>
+          <td>{{a.rejected}}</td>
+          <td>{{a.total}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+<div class="loading" *ngIf="isloading">
+  <app-loading></app-loading>
+</div>
+</div>
