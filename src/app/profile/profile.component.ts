@@ -12,9 +12,10 @@ export class ProfileComponent implements OnInit {
   constructor(private basicFunction: BasicFunctionsService) {}
   ngOnInit(): void {
     this.basicFunction.getUserDetails().then((profile) => {
-      this.userExtraDetails = profile.extra;
-      delete profile.extra;
-      this.profileDetails = profile;
+      const g = Object.assign({},profile);
+      this.userExtraDetails = g.extra;
+      delete g.extra;
+      this.profileDetails = g;
       this.profileDetailsKeys = Object.keys(this.profileDetails);
       console.log('test');
     });
