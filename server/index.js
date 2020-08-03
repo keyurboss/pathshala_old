@@ -71,8 +71,8 @@ const gerUserDetails = async (params) => {
     "ub.other as user_data",
     "sd.sangh_name",
   ]);
-  db.from("user_basic as ub");
-  db.join("users as us", "us.user_id = ub.user_id", "left");
+  db.from("users as us");
+  db.join("user_basic as ub", "ub.user_id = us.user_id", "left");
 
   if (params.id && params.password) {
     db.where("us.unique_id", params.id).where("us.password", params.password);

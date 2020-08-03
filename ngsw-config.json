@@ -38,7 +38,7 @@
         "strategy": "freshness",
         "timeout": "10s"
       },
-      "urls": ["**/basicdetails","**/points_details"],
+      "urls": ["*/basicdetails","*/points_details"],
       "version": 1
     }
   ]
