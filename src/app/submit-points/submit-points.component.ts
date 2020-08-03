@@ -1,27 +1,38 @@
 import { Component, OnInit } from '@angular/core';
 import { StateService } from '@uirouter/core';
 import { GlobalVariables } from '../variables';
-import { BasicFunctionsService } from '../services/basic-functions.service';
+import {
+  BasicFunctionsService,
+  PointsDetailsInterface,
+} from '../services/basic-functions.service';
 import { SubmitDialogComponent } from './submit-dialogpopup.component';
 import { MatDialog } from '@angular/material/dialog';
+interface pointsDetails {
+  [key: string]: PointsDetailsInterface;
+}
 @Component({
   selector: 'app-submit-points',
   templateUrl: './submit-points.component.html',
   styleUrls: ['./submit-points.component.scss'],
 })
 export class SubmitPointsComponent implements OnInit {
+  pointsDetails: pointsDetails = {};
+  selected: string | boolean = false;
+  types = [
+    { name: 'Gatha', id: 1 },
+    { name: 'Daily Task', id: 4 },
+    { name: 'Weekly Task', id: 3 },
+  ];
+  swal = GlobalVariables.swal;
   constructor(
     private state: StateService,
     private basic: BasicFunctionsService,
     public dialog: MatDialog
-  ) {}
-  selected: string | boolean = false;
-  types = [
-    { name: 'Gatha', id: 1 },
-    { name: 'Daily', id: 2 },
-    { name: 'Weekly', id: 3 },
-  ];
-  swal = GlobalVariables.swal;
+  ) {
+    basic.PointsDetails.forEach((i) => {
+      this.pointsDetails[i.id] = i;
+    });
+  }
   ngOnInit(): void {}
 
   submitbuttonClicked() {

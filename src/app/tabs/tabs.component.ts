@@ -9,7 +9,7 @@ import { StateService } from '@uirouter/core';
 export class TabsComponent implements OnInit {
   tabNum = 3;
   swal = GlobalVariables.swal;
-  selected = 0;
+  selected = 2;
   SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight' };
   constructor(private state: StateService) {}
 

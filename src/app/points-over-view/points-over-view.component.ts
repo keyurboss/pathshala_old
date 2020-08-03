@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BasicFunctionsService } from '../services/basic-functions.service';
 import { HttpService } from '../services/http.service';
 export interface FetchpointRequestInterFace {
   nolimit?: boolean;
@@ -11,14 +12,20 @@ export interface FetchpointRequestInterFace {
         year?: boolean;
         status?: boolean;
         day?: boolean;
+        type?: boolean;
       };
   order_by?: true | 'desc';
-  fetch_to_display: boolean;
+  fetch_to_display?: boolean;
 }
 export interface TableOfpoints {
   approved: number;
   rejected: number;
   total: number;
+  point?: number;
+  sutra?: number;
+  kavya?: number;
+  week?: number;
+  daily?: number;
   timestamp?: number;
 }
 export interface FetchReponse {
@@ -44,25 +51,54 @@ export class PointsOverViewComponent implements OnInit {
   reqData: FetchpointRequestInterFace = {
     stream: 1,
     limit: 3,
-    fetch_to_display: true,
+    group_by: {
+      type: true,
+    },
     order_by: 'desc',
   };
+  dataLoaded = false;
   format = '';
   header = '';
-  constructor(private http: HttpService) {
+  // tslint:disable-next-line: variable-name
+  get_allData: {
+    user_id?: number;
+    point?: number;
+    sutra?: number;
+    kavya?: number;
+    week?: number;
+    daily?: number;
+    timestamp?: number;
+  } = {
+    daily: 0,
+    week: 0,
+    kavya: 0,
+    point: 0,
+    sutra: 0,
+  };
+  // tslint:disable-next-line: variable-name
+  user_details: any = {};
+  constructor(private http: HttpService, private basic: BasicFunctionsService) {
+    this.init();
     this.selectedbutton = '';
   }
-  ngOnInit(): void {
-    // this.getData({
-    //   limit: 3,
-    //   stream: 1,
-    //   order_by: true,
-    //   group_by: {
-    //     month: true,
-    //     status: true,
-    //   },
-    // }).then(console.log);
+  async init() {
+    this.isloading = true;
+    if (this.basic.userDetails) {
+      this.user_details = this.basic.userDetails;
+    } else {
+      await this.basic.getUserDetails().then((c) => (this.user_details = c));
+    }
+    await this.getData({
+      stream: 1,
+      limit: 1,
+      group_by: {
+        type: true,
+      },
+    }).then((a) => (a.length > 0 ? (this.get_allData = a[0]) : ''));
+    this.dataLoaded = true;
+    this.isloading = false;
   }
+  ngOnInit(): void {}
   changeSelection(a: string) {
     this.selectedbutton = a;
     if (a === 'daily') {
@@ -82,6 +118,7 @@ export class PointsOverViewComponent implements OnInit {
       month: a === 'month' ? true : false,
       year: a === 'year' ? true : false,
       day: a === 'daily' ? true : false,
+      type: true,
     };
     this.tableData = [];
     this.streambroken = false;
@@ -91,29 +128,28 @@ export class PointsOverViewComponent implements OnInit {
     this.isloading = true;
     this.getData(this.reqData).then((d) => {
       if (d.length < this.reqData.limit) {
-        console.log(d);
         this.streambroken = true;
       }
       this.proceessData(d);
     });
   }
   private proceessData(data: FetchReponse[]) {
-    const tempData: TableOfpoints[] = data.map((c) => {
-      return {
-        approved: c.approved,
-        timestamp: c.timestamp * 1000,
-        rejected: c.rejected,
-        total: c.approved + c.rejected,
-      };
-    });
-    this.tableData = this.tableData.concat(tempData);
+    // const tempData: TableOfpoints[] = data.map((c) => {
+    //   return {
+    //     approved: c.approved,
+    //     timestamp: c.timestamp * 1000,
+    //     rejected: c.rejected,
+    //     total: c.approved + c.rejected,
+    //   };
+    // });
+    this.tableData = this.tableData.concat(data as any);
     this.isloading = false;
   }
   viewMore() {
     this.reqData.stream++;
     this.FetchAndProcessData();
   }
-  private getData(data: FetchpointRequestInterFace): Promise<[]> {
+  private getData(data: FetchpointRequestInterFace): Promise<any[]> {
     if (typeof data.group_by === 'object') {
       data.group_by = JSON.stringify(data.group_by);
     }

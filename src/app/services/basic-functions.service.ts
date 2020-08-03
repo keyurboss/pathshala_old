@@ -2,19 +2,39 @@ import { Injectable } from '@angular/core';
 import { HttpService } from './http.service';
 import { VanillaFunctionsService } from './vanilla.service';
 import { Variables } from '../variables';
+export interface PointsDetailsInterface {
+  id: number;
+  points_name: string;
+  details: {
+    points?: number;
+    pre_approved?: boolean;
+    display_name: string;
+    display_extra?: {
+      header?: string;
+      details?: string;
+    }[];
+  };
+  edited_on: number;
+}
 @Injectable({
   providedIn: 'root',
 })
 export class BasicFunctionsService {
-  area = 'asdasd';
   private appVariables: Variables;
+  userDetails: any;
+  PointsDetails: PointsDetailsInterface[] = [];
+  BasicSiteDetails: any = {};
   constructor(
     private http: HttpService,
-    private window: Window,
     private vanill: VanillaFunctionsService
   ) {
     this.appVariables = new Variables();
+    this.init();
     // this.window['demo'] = this;
+  }
+  async init() {
+    this.PointsDetails = await this.getpointsbasicDetails();
+    this.BasicSiteDetails = await this.getSiteBasicDetails();
   }
   isLogin() {
     return new Promise((resolve, reject) => {
@@ -39,6 +59,12 @@ export class BasicFunctionsService {
       }
     });
   }
+  getpointsbasicDetails(): Promise<PointsDetailsInterface[]> {
+    return this.http.getHttp('/points_details', 'get');
+  }
+  getSiteBasicDetails(): Promise<any> {
+    return this.http.getHttp('/basicdetails', 'get');
+  }
   getUserDetails(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.http
@@ -55,7 +81,7 @@ export class BasicFunctionsService {
           let extraData;
           if (typeof data.data.user_data === 'string') {
             extraData = JSON.parse(data.data.user_data);
-          }else{
+          } else {
             extraData = data.data.user_data;
           }
           if (extraData.alternate_no) {
@@ -69,8 +95,11 @@ export class BasicFunctionsService {
           } else {
             extraData.unique_id = false;
           }
+          b['Basic Points'] = extraData.basic_points || 0;
+          extraData.basic_points = extraData.basic_points || 0;
           b.extra = extraData;
           b.extra.sangh_name = data.data.sangh_name;
+          this.userDetails = b;
           resolve(b);
         })
         .catch(reject);

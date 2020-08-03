@@ -8,12 +8,14 @@ import { StateService } from '@uirouter/core';
 })
 export class HttpService {
   private apiUrl;
+  private baseUrl;
   private loginUrl;
   constructor(
     variabbles: Variables,
     private httpclient: HttpClient,
     private state: StateService
   ) {
+    this.baseUrl = variabbles.getBaseUrl();
     this.apiUrl = variabbles.getApiUrl();
     this.loginUrl = variabbles.getLoginUrl();
   }
@@ -42,6 +44,11 @@ export class HttpService {
           }
         }
       );
+    });
+  }
+  getHttp(url: string, type: 'get' | 'post', params = {}): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http(this.baseUrl + url, type, params).subscribe(resolve, reject);
     });
   }
   getLoginHttp(url: string, type: 'get' | 'post', params = {}): Promise<any> {

@@ -37,6 +37,9 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/views"));
 
+let BasicPointDetailsArray = [];
+let BasicPointDetails = {};
+let basicsiteDetails = {};
 const authenticateToken = function (req, res, next) {
   const authHeader = req.headers["authorization"];
   const token1 = authHeader && authHeader.split(" ")[1];
@@ -55,7 +58,7 @@ function generateAccessToken(user) {
 function generateRefreshToken(user) {
   return jwt.sign(user, token.refreshToken);
 }
-const gerUserDetails = async function (params) {
+const gerUserDetails = async (params) => {
   const db = await pool.get_connection();
   db.select([
     "us.user_id",
@@ -82,6 +85,28 @@ const gerUserDetails = async function (params) {
     db.release();
   });
 };
+const get_points_details = async () => {
+  const db = await pool.get_connection();
+  try {
+    BasicPointDetailsArray = await db.order_by("id").get("points_types");
+    db.release();
+    BasicPointDetails = {};
+    BasicPointDetailsArray.forEach((c) => {
+      BasicPointDetails[c.id] = c;
+    });
+  } catch (e) {
+    db.release();
+  }
+};
+const getSiteBAsicDetails = async () => {
+  basicsiteDetails = {};
+  const db = await pool.get_connection();
+  const res = await db.get("basic_details");
+  db.release();
+  res.forEach((c) => {
+    basicsiteDetails[c.colum] = c.value;
+  });
+};
 const addRefreshTokenandMakeEntry = async function (user, token) {
   pool.get_connection().then((qb) => {
     qb.insert("jwt_tokens", {
@@ -93,6 +118,41 @@ const addRefreshTokenandMakeEntry = async function (user, token) {
     });
   });
 };
+const calculateData = (data, type) => {
+  try {
+    const details = BasicPointDetails[type].details;
+    let points = 0;
+    if (type === 1 || type === 2) {
+      if (!Array.isArray(data)) {
+        new Error("s");
+      }
+      const multi = details.points;
+      data.forEach((i) => (points += i.no_gatha * multi));
+    }
+    if (type === 4) {
+      if (data.done) {
+        points = details.points;
+      }
+    }
+    if (type === 3) {
+      if (data.done && data.day) {
+        if (details.min_days) {
+          if (details.perday && data.day >= details.min_days) {
+            points = details.points * data.day;
+          } else if (!details.perday) {
+            points = details.points;
+          }
+        } else {
+          points = details.points;
+        }
+      }
+    }
+    return points;
+  } catch (e) {
+    console.log(e);
+    return 0;
+  }
+};
 async function FetchPoints(data) {
   const db = await pool.get_connection();
   try {
@@ -100,6 +160,12 @@ async function FetchPoints(data) {
     if (data.group_by) {
       db.select("SUM(points) as point", false);
       db.group_by("user_id");
+      if (data.group_by.type) {
+        db.select("SUM(IF(point_type = 1,points*1,points*0)) as sutra", false);
+        db.select("SUM(IF(point_type = 2,points*1,points*0)) as kavya", false);
+        db.select("SUM(IF(point_type = 3,points*1,points*0)) as week", false);
+        db.select("SUM(IF(point_type = 4,points*1,points*0)) as daily", false);
+      }
       if (data.group_by.day) {
         db.group_by("day");
         db.select("day");
@@ -116,9 +182,9 @@ async function FetchPoints(data) {
         db.group_by("status");
         db.select("status");
       }
-      if(data.fetch_to_display){
-        db.select("SUM(IF(status = 3,points*1,points*0)) as rejected",false)
-        db.select("SUM(IF(status = 4,points*1,points*0)) as approved",false)
+      if (data.fetch_to_display) {
+        db.select("SUM(IF(status = 3,points*1,points*0)) as rejected", false);
+        db.select("SUM(IF(status = 4,points*1,points*0)) as approved", false);
       }
       // db.where('','')
     } else {
@@ -163,7 +229,7 @@ async function FetchPoints(data) {
     if (data.point_type) {
       db.where("pm.point_type", data.point_type);
     }
-    return await db.get("points_main as pm").finally(() => {
+    return db.get("points_main as pm").finally(() => {
       db.release();
     });
   } catch (e) {
@@ -172,7 +238,25 @@ async function FetchPoints(data) {
     throw e;
   }
 }
+getSiteBAsicDetails();
+get_points_details();
 app.use("/api", router);
+app.get("/basicdetails", (req, res) => {
+  res.send(basicsiteDetails);
+});
+app.post("/restart", (req, res) => {
+  if (req.body.pass && req.body.pass === "KeyurRocks") {
+    setTimeout(() => {
+      process.exit(1);
+    });
+    res.sendStatus(200);
+  } else {
+    res.sendStatus(400);
+  }
+});
+app.get("/points_details", (req, res) => {
+  res.send(BasicPointDetailsArray);
+});
 app.use("/test", (req, res) => {
   res.send({ data: "success" });
 });
@@ -251,15 +335,22 @@ router.post("/submit", async (req, res) => {
   ) {
     const db = await pool.get_connection();
     try {
+      if(data.point_type === 3){
+        if(new Date(data.timestamp * 1000).getDay() !== 6){
+          new Error('Date');
+        }
+      }
       const time = Math.floor(Date.now() / 1000);
+      const preApproved =
+        BasicPointDetails[data.point_type].details.pre_approved;
       const insert_data = {
         user_id: req.user.user_id,
         day: data.day,
         month: data.month,
         year: data.year,
         point_type: data.point_type,
-        status: 2,
-        points: 0,
+        status: preApproved ? 4 : 2,
+        points: preApproved ? calculateData(data.details, data.point_type) : 0,
         timestamp: data.timestamp,
         details: data.details,
         created_on: time,
@@ -319,6 +410,6 @@ router.get("/mypoints", async (req, res) => {
 app.use("**/*", (req, res) => {
   res.sendStatus(404);
 });
-app.listen(process.env.PORT || 3030, () => {
-  console.log(`App Started on PORT ${process.env.PORT || 3030}`);
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`App Started on PORT ${process.env.PORT || 3000}`);
 });

@@ -1,68 +1,100 @@
-<div class="main points">
-  <div class="selection">
-    <button
-      mat-raised-button
-      color="primary"
-      (click)="changeSelection('daily')"
-      [disabled]="selectedbutton === 'daily'"
-    >
-      Daily
-    </button>
-    <button
-      mat-raised-button
-      color="primary"
-      (click)="changeSelection('month')"
-      [disabled]="selectedbutton === 'month'"
-    >
-      Month
-    </button>
-    <button
-      mat-raised-button
-      color="primary"
-      (click)="changeSelection('year')"
-      [disabled]="selectedbutton === 'year'"
-    >
-      Year
-    </button>
-  </div>
-  <div *ngIf="tableData.length > 0" class="table">
-    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-      <thead>
-        <tr>
-          <th class="mdl-data-table__cell--non-numeric">{{ header }}</th>
-          <th>Approved</th>
-          <th>Rejected</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let a of tableData">
-          <td class="mdl-data-table__cell--non-numeric">
-            {{ a.timestamp | date: format }}
-          </td>
-          <td>{{ a.approved }}</td>
-          <td>{{ a.rejected }}</td>
-          <td>{{ a.total }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div *ngIf="tableData.length > 0" class="viewmore">
-    <div [hidden]="streambroken === false">
-      All Data Has Been Loaded
+<div class="main points" *ngIf="dataLoaded">
+  <div class="flex-container colum center">
+    <h1>Total Point</h1>
+    <div class="main-Points-div">
+      <div class="total-points">
+        <div class="flex-container colum center">
+          <div>
+            Total Gatha Points:- {{ get_allData.sutra + get_allData.kavya }}
+          </div>
+          <div>
+            Total Task Point:- {{ get_allData.week + get_allData.daily }}
+          </div>
+        </div>
+      </div>
+      <!-- <div class="divider" style="width: unset;"></div> -->
+      <div class="total-points">
+        <div class="flex-container colum center">
+          <div>
+            Total With Basic Points:-
+            <!-- {{user_details | json}} -->
+            {{ user_details.extra.basic_points + get_allData.point }}
+          </div>
+          <div>Total Point Gained :- {{ get_allData.point }}</div>
+        </div>
+      </div>
     </div>
-    <div [hidden]="streambroken === true">
+  </div>
+  <div class="all-points">
+    <div class="divider"></div>
+    <h1 class="header">Get History of points</h1>
+    <div class="selection">
       <button
         mat-raised-button
-        color="warn"
-        (click)="viewMore()"
-        [disabled]="streambroken"
+        color="primary"
+        (click)="changeSelection('daily')"
+        [disabled]="selectedbutton === 'daily'"
       >
-        View More
+        Daily
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="changeSelection('month')"
+        [disabled]="selectedbutton === 'month'"
+      >
+        Month
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="changeSelection('year')"
+        [disabled]="selectedbutton === 'year'"
+      >
+        Year
       </button>
     </div>
+    <div *ngIf="tableData.length > 0" class="table">
+      <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+        <thead>
+          <tr>
+            <th class="mdl-data-table__cell--non-numeric">{{ header }}</th>
+            <th>Sutra</th>
+            <th>Kavya</th>
+            <th>Task</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let a of tableData">
+            <td class="mdl-data-table__cell--non-numeric">
+              {{ a.timestamp * 1000 | date: format }}
+            </td>
+            <td>{{ a.sutra }}</td>
+            <td>{{ a.kavya }}</td>
+            <td>{{ a.week + a.daily }}</td>
+            <td>{{ a.point }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="tableData.length > 0" class="viewmore">
+      <div [hidden]="streambroken === false">
+        All Data Has Been Loaded
+      </div>
+      <div [hidden]="streambroken === true">
+        <button
+          mat-raised-button
+          color="warn"
+          (click)="viewMore()"
+          [disabled]="streambroken"
+        >
+          View More
+        </button>
+      </div>
+    </div>
   </div>
-  <div class="loading" *ngIf="isloading">
-    <app-loading></app-loading>
-  </div>
+</div>
+<div class="loading" *ngIf="isloading">
+  <app-loading></app-loading>
 </div>

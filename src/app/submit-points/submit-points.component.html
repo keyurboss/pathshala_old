@@ -24,4 +24,26 @@
       </button>
     </div>
   </div>
+  <mat-divider></mat-divider>
+  <div class="points-structure-container">
+    <h2>Points Structure</h2>
+    <div class="points">
+      <div class="tasks">
+        <div>
+          <h2>Daily Task</h2>
+          <h4>{{pointsDetails['4'].details.display_extra[0].details}}</h4>
+        </div>
+        <div>
+          <h2>Weekly Task</h2>
+          <h4>{{pointsDetails['3'].details.display_extra[0].details}}</h4>
+        </div>
+      </div>
+      <div class="sutra">
+        <h3>Sutra:- {{pointsDetails['1'].details.points}} points/gatha</h3>
+        <h3>Kavya:- {{pointsDetails['2'].details.points}} points/gatha</h3>
+        <h3>Daily Task:- {{pointsDetails['4'].details.points}} points/day</h3>
+        <h3>Weekly Task:- {{pointsDetails['3'].details.points}} points/day</h3>
+      </div>
+    </div>
+  </div>
 </div>

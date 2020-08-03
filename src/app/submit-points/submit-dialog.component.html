@@ -1,11 +1,13 @@
 <mat-toolbar color="primary" style="display: flex; flex-flow: row-reverse;">
-  <div mat-dialog-close>
+  <div mat-dialog-close style="cursor: pointer;">
     <mat-icon aria-label="Example home icon">cancel</mat-icon>
   </div>
 </mat-toolbar>
 <div class="main-container">
   <div class="flex-center submission-title">
-    <h1>Daily Points Submitions</h1>
+    <h1 *ngIf="data.selected === 1">Daily Gatha Points Submitions</h1>
+    <h1 *ngIf="data.selected === 4">Daily Task Submitions</h1>
+    <h1 *ngIf="data.selected === 3">Weekly Task Submitions</h1>
   </div>
   <div class="flex-center">
     <mat-form-field appearance="outline" color="primary">
@@ -16,79 +18,136 @@
         [min]="minDate"
         [max]="maxDate"
         [formControl]="date"
+        [matDatepickerFilter]="dateFilter"
         (click)="dp3.open()"
         (focus)="dp3.open()"
         (dateChange)="dateChange()"
-        disabled
+        disabled="true"
       />
       <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
       <mat-datepicker #dp3 touchUi disabled="false"></mat-datepicker>
     </mat-form-field>
   </div>
-  <div *ngFor="let gathaSubmit of gathaDetails">
-    <mat-divider></mat-divider>
-    <div class="gatha-div-container">
-      <div class="gatha-div-margin">
+  <div *ngIf="data.selected === 1">
+    <div *ngFor="let gathaSubmit of gathaDetails">
+      <mat-divider></mat-divider>
+      <div class="gatha-div-container">
+        <div class="gatha-div-margin">
+          <mat-form-field
+            style="width: 16vh;"
+            appearance="outline"
+            color="primary"
+          >
+            <mat-label>Gatha type</mat-label>
+            <mat-select [(value)]="gathaSubmit.selectedGath">
+              <mat-option
+                [value]="option.value"
+                *ngFor="let option of gathatype"
+                >{{ option.viewValue }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="gatha-div-margin">
+          <mat-form-field appearance="outline" color="primary">
+            <mat-label>Number of Gatha</mat-label>
+            <input matInput type="number" [(ngModel)]="gathaSubmit.no_gatha" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="gatha-div-container">
         <mat-form-field
-          style="width: 16vh;"
+          class="gatha-div-discription"
           appearance="outline"
           color="primary"
         >
-          <mat-label>Gatha type</mat-label>
-          <mat-select [disabled]="true" [(value)]="gathaSubmit.selectedGath">
-            <mat-option
-              [value]="option.value"
-              *ngFor="let option of gathatype"
-              >{{ option.viewValue }}</mat-option
-            >
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="gatha-div-margin">
-        <mat-form-field
-          style="width: 16vh;"
-          appearance="outline"
-          color="primary"
-        >
-          <mat-label>Gatha type</mat-label>
-          <mat-select [(value)]="gathaSubmit.selectedGath">
-            <mat-option
-              [value]="option.value"
-              *ngFor="let option of gathatype"
-              >{{ option.viewValue }}</mat-option
-            >
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="gatha-div-margin">
-        <mat-form-field appearance="outline" color="primary">
-          <mat-label>Number of Gatha</mat-label>
-          <input matInput type="number" [(ngModel)]="gathaSubmit.no_gatha" />
+          <mat-label>Gatha Description</mat-label>
+          <textarea
+            matInput
+            placeholder="Ex. Which Sutra etc."
+            [(ngModel)]="gathaSubmit.description"
+          ></textarea>
         </mat-form-field>
       </div>
     </div>
     <div class="gatha-div-container">
-      <mat-form-field
-        class="gatha-div-discription"
-        appearance="outline"
-        color="primary"
-      >
-        <mat-label>Gatha Description</mat-label>
-        <textarea
-          matInput
-          placeholder="Ex. Which Sutra etc."
-          [(ngModel)]="gathaSubmit.description"
-        ></textarea>
-      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="AddBlankGatha()">
+        <mat-icon>add</mat-icon>
+        <span>Add</span>
+      </button>
+      <button mat-raised-button color="primary" (click)="submit()">
+        <span>Submit</span>
+      </button>
     </div>
   </div>
-  <div class="gatha-div-container">
-    <button mat-raised-button color="primary" (click)="AddBlankGatha()">
-      <mat-icon>add</mat-icon>
-      <span>Add</span>
-    </button>
-    <button mat-raised-button color="primary" (click)="submit()">
-      <span>Submit</span>
-    </button>
+  <mat-divider></mat-divider>
+  <div
+    class="flex-container colum"
+    *ngIf="data.selected === 4 || data.selected === 3"
+  >
+    <div class="flex-container colum" *ngIf="data.selected === 4">
+      <h2>Have Done Today's Task?</h2>
+      <h3
+        *ngIf="
+          pointsDetails['4'] &&
+          pointsDetails['4'].details.display_extra.length > 0
+        "
+      >
+        Task: {{ pointsDetails["4"].details.display_extra[0].details }}
+      </h3>
+    </div>
+    <div class="flex-container colum" *ngIf="data.selected === 3">
+      <h2>Have Done Weekly Task?</h2>
+      <h3
+        *ngIf="
+          pointsDetails['3'] &&
+          pointsDetails['3'].details.display_extra.length > 0
+        "
+      >
+        Task: {{ pointsDetails["3"].details.display_extra[0].details }}
+      </h3>
+      <mat-divider></mat-divider>
+      <h4 class="border">Please Select No days You have done the task.</h4>
+      <mat-form-field style="width: 16vh;" appearance="outline" color="primary">
+        <mat-label>No Days</mat-label>
+        <mat-select [(value)]="numberOfDays">
+          <mat-option
+            [value]="option"
+            *ngFor="let option of [0, 1, 2, 3, 4, 5, 6, 7]"
+            >{{ option }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="flex-container space-even" *ngIf="data.selected === 4">
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="doneTask === true"
+        (click)="doneTask = true"
+      >
+        Yes
+      </button>
+      <button
+        mat-raised-button
+        color="warn"
+        [disabled]="doneTask === false"
+        (click)="doneTask = false"
+      >
+        No
+      </button>
+    </div>
+    <div>
+      <button
+        mat-raised-button
+        color="accent"
+        [disabled]="
+          numberOfDays === 0 && doneTask !== false && doneTask !== true
+        "
+        (click)="TaskPointSubmition()"
+      >
+        Submit
+      </button>
+    </div>
   </div>
 </div>

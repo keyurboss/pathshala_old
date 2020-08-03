@@ -33,7 +33,15 @@
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "@firebase/app",
+              "firebase/app",
+              "@firebase/performance",
+              "@firebase/util",
+              "@firebase/component",
+              "hammerjs"
+            ]
           },
           "configurations": {
             "production": {

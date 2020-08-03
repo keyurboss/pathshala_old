@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, AfterViewInit } from '@angular/core';
 import {
   MatDialog,
   MatDialogRef,
@@ -8,47 +8,146 @@ import { FormControl } from '@angular/forms';
 import { StateService } from '@uirouter/core';
 import { GlobalVariables } from '../variables';
 import { HttpService } from '../services/http.service';
+import {
+  BasicFunctionsService,
+  PointsDetailsInterface,
+} from '../services/basic-functions.service';
 interface GathaTypeInter {
-  value: string;
+  value: number;
   viewValue: string;
 }
 interface GathSubmit {
-  selectedGath: string;
+  selectedGath: string | number;
   no_gatha: number;
   description?: string;
+}
+// tslint:disable-next-line: class-name
+interface pointsDetails {
+  [key: string]: PointsDetailsInterface;
 }
 @Component({
   selector: 'app-submit-dialog',
   templateUrl: './submit-dialog.component.html',
   styleUrls: ['./submit-points.component.scss'],
 })
-export class SubmitDialogComponent implements OnInit {
-  // constructor(
-  //   public dialogRef: MatDialogRef<SubmitDialogComponent>,
-  //   @Inject(MAT_DIALOG_DATA) public data: {}
-  // ) {}
+export class SubmitDialogComponent implements OnInit, AfterViewInit {
+  doneTask: boolean;
   swal = GlobalVariables.swal;
-  date = new FormControl(new Date());
+  pointsDetails: pointsDetails = {};
+  date;
   private selectedDate: Date;
   minDate: Date;
   maxDate: Date;
+  numberOfDays = 0;
   gathatype: GathaTypeInter[] = [
-    { value: 'new', viewValue: 'New' },
-    { value: 'old', viewValue: 'Old' },
+    { value: 1, viewValue: 'Sutra' },
+    { value: 2, viewValue: 'Kavya' },
   ];
   gathaDetails: GathSubmit[] = [];
+  dateFilter = (d: Date | null): boolean => {
+    if (this.data.selected && this.data.selected === 3) {
+      const day = (d || new Date()).getDay();
+      // Prevent Saturday and Sunday from being selected.
+      return day === 6;
+    } else {
+      return true;
+    }
+  };
   constructor(
-    private state: StateService,
     private http: HttpService,
+    basic: BasicFunctionsService,
     public dialogRef: MatDialogRef<SubmitDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) {
+    const basicDetails = basic.BasicSiteDetails;
+    if (basicDetails.min_timestamp) {
+      this.minDate = new Date(basicDetails.min_timestamp);
+    }
+    if (data.selected === 3) {
+      this.date = new FormControl();
+    } else {
+      this.date = new FormControl(new Date());
+    }
+    basic.PointsDetails.forEach((i) => {
+      this.pointsDetails[i.id] = i;
+    });
+  }
+  ngAfterViewInit(): void {
+    // this.date.disable({
+    //   onlySelf: true,
+    // });
+    setInterval(() => {
+      console.log(this.numberOfDays);
+    }, 3000);
+  }
   ngOnInit(): void {
-    this.minDate = new Date(1589241600000);
+    if (!this.minDate) {
+      this.minDate = new Date(1589241600000);
+    }
     this.maxDate = new Date();
     this.AddBlankGatha();
-    this.selectedDate = this.date.value as Date;
+    if (this.data.selected !== 3) {
+      this.selectedDate = this.date.value as Date;
+    }
     console.log(this.data.selected);
+  }
+  async TaskPointSubmition() {
+    if (this.data.selected === 4) {
+      this.SubmitDailyTaskPoint();
+    } else if (this.data.selected === 3) {
+      this.WeeklyTaskSubmit();
+    }
+  }
+  private async WeeklyTaskSubmit() {
+    if (!this.selectedDate) {
+      this.swal.fire('Please Select Date', '', 'warning');
+    } else if (this.numberOfDays === 0) {
+      this.swal.fire(
+        'Please Select Number Days You Have Done Task',
+        '',
+        'warning'
+      );
+    } else {
+      const res = await this.SubmitData(
+        {
+          done: true,
+          day: this.numberOfDays,
+        },
+        3
+      );
+      if (res.success && res.success === 1) {
+        this.swal
+          .fire('Daily Task Points Submitted', '', 'success')
+          .then(() => {
+            this.dialogRef.close();
+          });
+      } else {
+        this.swal.fire(
+          'Error',
+          'Request is submmited for selected date <br> Please select other date',
+          'error'
+        );
+      }
+    }
+  }
+  private async SubmitDailyTaskPoint() {
+    const res = await this.SubmitData(
+      {
+        done: this.doneTask,
+      },
+      4
+    );
+    if (res.success && res.success === 1) {
+      this.swal.fire('Daily Task Points Submitted', '', 'success').then(() => {
+        this.dialogRef.close();
+      });
+    } else {
+      this.swal.fire(
+        'Error',
+        'Request is submmited for selected date <br> Please select other date',
+        'error'
+      );
+    }
   }
   AddBlankGatha() {
     if (this.gathaDetails.length !== 0) {
@@ -72,20 +171,20 @@ export class SubmitDialogComponent implements OnInit {
         return;
       }
     }
-
-    const res = await this.http.getApiHttp('/submit', 'post', {
-      day: this.selectedDate.getDate(),
-      month: this.selectedDate.getMonth()+1,
-      year: this.selectedDate.getFullYear(),
-      point_type: this.data.selected,
-      timestamp: Math.floor(this.selectedDate.getTime() / 1000),
-      details: {
-        gatha: this.gathaDetails,
-      },
-    });
+    let res: any = {};
+    if (this.data.selected === 1) {
+      const sutra = this.gathaDetails.filter((c) => c.selectedGath === 1);
+      if (sutra.length > 0) {
+        res = await this.SubmitData(sutra, 1);
+      }
+      const kavya = this.gathaDetails.filter((c) => c.selectedGath === 2);
+      if (kavya.length > 0) {
+        res = await this.SubmitData(kavya, 2);
+      }
+    }
     if (res.success && res.success === 1) {
-      this.swal.fire('Points Submitted', '', 'success').then(() => {
-        // this.dialogRef.close();
+      this.swal.fire('Gatha Points Submitted', '', 'success').then(() => {
+        this.dialogRef.close();
       });
     } else {
       this.swal.fire(
@@ -95,13 +194,17 @@ export class SubmitDialogComponent implements OnInit {
       );
     }
   }
+  SubmitData(data, type) {
+    return this.http.getApiHttp('/submit', 'post', {
+      day: this.selectedDate.getDate(),
+      month: this.selectedDate.getMonth() + 1,
+      year: this.selectedDate.getFullYear(),
+      point_type: type,
+      timestamp: Math.floor(this.selectedDate.getTime() / 1000),
+      details: data,
+    });
+  }
   dateChange() {
     this.selectedDate = this.date.value as Date;
-    console.log({
-      day: this.selectedDate.getDate(),
-      month: this.selectedDate.getMonth(),
-      year: this.selectedDate.getFullYear(),
-    });
-    console.log();
   }
 }

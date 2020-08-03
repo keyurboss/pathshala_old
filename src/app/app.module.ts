@@ -168,12 +168,6 @@ export class AppModule {
       .then(() => {
         this.angularFireMessaging.getToken.subscribe(console.log, console.log);
       });
-    this.analytics.logEvent('start', { test: true });
-    this.analytics.logEvent('select_content', {
-      content_type: 'image',
-      content_id: 'P12453',
-      items: [{ name: 'Kittens' }],
-    });
   }
   cachedAnalytics() {
     caches.open('analytics').then((ca) => {
