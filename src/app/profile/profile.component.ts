@@ -6,7 +6,7 @@ import { BasicFunctionsService } from '../services/basic-functions.service';
   styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
-  profileDetails;
+  profileDetails: any = {};
   userExtraDetails = [];
   profileDetailsKeys = [];
   constructor(private basicFunction: BasicFunctionsService) {}
