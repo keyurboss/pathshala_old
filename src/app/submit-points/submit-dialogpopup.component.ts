@@ -60,8 +60,9 @@ export class SubmitDialogComponent implements OnInit, AfterViewInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     const basicDetails = basic.BasicSiteDetails;
+    console.log(basicDetails);
     if (basicDetails.min_timestamp) {
-      this.minDate = new Date(basicDetails.min_timestamp);
+      this.minDate = new Date(Number(basicDetails.min_timestamp));
     }
     if (data.selected === 3) {
       this.date = new FormControl();
@@ -76,12 +77,9 @@ export class SubmitDialogComponent implements OnInit, AfterViewInit {
     // this.date.disable({
     //   onlySelf: true,
     // });
-    setInterval(() => {
-      console.log(this.numberOfDays);
-    }, 3000);
   }
   ngOnInit(): void {
-    if (!this.minDate) {
+    if (typeof this.minDate === 'undefined') {
       this.minDate = new Date(1589241600000);
     }
     this.maxDate = new Date();
