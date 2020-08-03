@@ -20,19 +20,19 @@
       </div>
     </mat-toolbar>
   </div>
-  <div class="full-height touch"
+  <div
+    class="full-height touch"
     (swipeleft)="swipe($event.type)"
     (swiperight)="swipe($event.type)"
   >
     <mat-tab-group
-    mat-stretch-tabs
+      mat-stretch-tabs
       class="flex-container mat-primary"
       mat-align-tabs="center"
       backgroundColor="primary"
       [selectedIndex]="selected"
     >
-    <div class="mat-tab-body-wrapper" style="padding: 5vh;">
-    </div>
+      <div class="mat-tab-body-wrapper" style="padding: 5vh;"></div>
       <mat-tab label="Profile">
         <div class="tab-background">
           <app-profile></app-profile>
@@ -44,7 +44,9 @@
         </ng-template>
       </mat-tab>
       <mat-tab label="Submit">
-        <app-submit-points></app-submit-points>
+        <ng-template matTabContent>
+          <app-submit-points></app-submit-points>
+        </ng-template>
       </mat-tab>
     </mat-tab-group>
   </div>

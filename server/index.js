@@ -398,6 +398,7 @@ router.get("/mypoints", async (req, res) => {
     if (data.group_by && typeof data.group_by === "string") {
       data.group_by = JSON.parse(data.group_by);
     }
+    data.user_id = req.user.user_id;
     const result = await FetchPoints(data);
     res.send({
       success: 1,

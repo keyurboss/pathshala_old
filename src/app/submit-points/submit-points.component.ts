@@ -18,19 +18,18 @@ interface pointsDetails {
 export class SubmitPointsComponent implements OnInit {
   pointsDetails: pointsDetails = {};
   selected: string | boolean = false;
+  isLoading: boolean;
   types = [
     { name: 'Gatha', id: 1 },
     { name: 'Daily Task', id: 4 },
     { name: 'Weekly Task', id: 3 },
   ];
   swal = GlobalVariables.swal;
-  constructor(
-    private state: StateService,
-    private basic: BasicFunctionsService,
-    public dialog: MatDialog
-  ) {
+  constructor(private basic: BasicFunctionsService, public dialog: MatDialog) {
+    this.isLoading = true;
     basic.PointsDetails.forEach((i) => {
       this.pointsDetails[i.id] = i;
+      this.isLoading = false;
     });
   }
   ngOnInit(): void {}

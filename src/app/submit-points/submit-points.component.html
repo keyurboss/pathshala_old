@@ -1,4 +1,4 @@
-<div class="main-container">
+<div class="main-container" *ngIf="isLoading === false">
   <div class="submitheaderla">
     <h2>Points Submit</h2>
   </div>
@@ -46,4 +46,7 @@
       </div>
     </div>
   </div>
+</div>
+<div *ngIf="isLoading === true">
+  <app-loading></app-loading>
 </div>
