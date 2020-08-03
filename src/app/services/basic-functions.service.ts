@@ -72,6 +72,7 @@ export class BasicFunctionsService {
         .then((data) => {
           const dob = new Date(Number(data.data.dob) * 1000);
           const b: any = {
+            Name: data.data.name,
             Gender: data.data.gender,
             'Mobile No.': data.data.mobile_no,
             'D.O.B':

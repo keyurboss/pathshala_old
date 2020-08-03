@@ -12,11 +12,18 @@ export class ProfileComponent implements OnInit {
   constructor(private basicFunction: BasicFunctionsService) {}
   ngOnInit(): void {
     this.basicFunction.getUserDetails().then((profile) => {
-      const g = Object.assign({},profile);
+      const g = Object.assign({}, profile);
       this.userExtraDetails = g.extra;
       delete g.extra;
+
       this.profileDetails = g;
       this.profileDetailsKeys = Object.keys(this.profileDetails);
+      if (this.profileDetailsKeys.indexOf('Name') > -1) {
+        this.profileDetailsKeys.splice(
+          this.profileDetailsKeys.indexOf('Name'),
+          1
+        );
+      }
       console.log('test');
     });
   }

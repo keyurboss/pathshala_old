@@ -1,7 +1,7 @@
 <mat-card class="card-margin">
   <div class="flex-container main">
     <div class="profilename">
-      <span>Shah Keyur Rajeshkumar</span>
+      <span>{{profileDetails.Name}}</span>
     </div>
     <div *ngIf="userExtraDetails['unique_id']" class="unique-id">
       <span>UNIQUE-ID:{{userExtraDetails['unique_id']}}</span>
