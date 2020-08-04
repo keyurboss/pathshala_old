@@ -37,17 +37,19 @@ export class TabsComponent implements OnInit {
         cancelButtonText: 'cancel',
       })
       .then((result) => {
-        localStorage.clear();
-        setTimeout(() => {
-          location.replace(location.origin);
-        }, 1000);
-        if (result.value) {
-          this.swal.fire({
-            icon: 'success',
-            title: 'Logged Out',
-            showConfirmButton: false,
-            timer: 1500,
-          });
+        if (result.isConfirmed) {
+          localStorage.clear();
+          setTimeout(() => {
+            location.replace(location.origin);
+          }, 1000);
+          if (result.value) {
+            this.swal.fire({
+              icon: 'success',
+              title: 'Logged Out',
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
         }
       });
   }

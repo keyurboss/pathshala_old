@@ -240,6 +240,10 @@ async function FetchPoints(data) {
 }
 getSiteBAsicDetails();
 get_points_details();
+setInterval(()=>{
+  getSiteBAsicDetails();
+  get_points_details();
+},10800000)
 app.use("/api", router);
 app.get("/basicdetails", (req, res) => {
   res.send(basicsiteDetails);
