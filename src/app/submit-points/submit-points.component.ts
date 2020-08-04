@@ -7,6 +7,7 @@ import {
 } from '../services/basic-functions.service';
 import { SubmitDialogComponent } from './submit-dialogpopup.component';
 import { MatDialog } from '@angular/material/dialog';
+// tslint:disable-next-line: class-name
 interface pointsDetails {
   [key: string]: PointsDetailsInterface;
 }
@@ -17,7 +18,6 @@ interface pointsDetails {
 })
 export class SubmitPointsComponent implements OnInit {
   pointsDetails: pointsDetails = {};
-  selected: string | boolean = false;
   isLoading: boolean;
   types = [
     { name: 'Gatha', id: 1 },
@@ -34,30 +34,26 @@ export class SubmitPointsComponent implements OnInit {
   }
   ngOnInit(): void {}
 
-  submitbuttonClicked() {
-    if (this.selected !== false) {
-      const dialogRef = this.dialog.open(SubmitDialogComponent, {
-        direction: 'ltr',
-        position: {
-          // top: '10px',
-          // right: '10px',
-          // left: '10px',
-          // bottom: '10px',
-        },
-        maxWidth: '75vh',
-        height: '90%',
-        width: '100%',
-        panelClass: 'full-screen-modal',
-        data: { selected: this.selected },
-      });
+  submitbuttonClicked(id) {
+    const dialogRef = this.dialog.open(SubmitDialogComponent, {
+      direction: 'ltr',
+      position: {
+        // top: '10px',
+        // right: '10px',
+        // left: '10px',
+        // bottom: '10px',
+      },
+      maxWidth: '75vh',
+      height: '90%',
+      width: '100%',
+      panelClass: 'full-screen-modal',
+      data: { selected: id },
+    });
 
-      dialogRef.afterClosed().subscribe((result) => {
-        console.log('The dialog was closed');
-        // this.animal = result;
-        console.log(result);
-      });
-    } else {
-      this.swal.fire('Warning', 'Please Select Point Type', 'warning');
-    }
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
+      // this.animal = result;
+      console.log(result);
+    });
   }
 }

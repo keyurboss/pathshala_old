@@ -73,18 +73,18 @@
     <div class="gatha-div-container">
       <button mat-raised-button color="primary" (click)="AddBlankGatha()">
         <mat-icon>add</mat-icon>
-        <span>Add</span>
+        <span>Add More</span>
       </button>
       <button mat-raised-button color="primary" (click)="submit()">
         <span>Submit</span>
       </button>
     </div>
   </div>
-  <mat-divider></mat-divider>
   <div
-    class="flex-container colum"
-    *ngIf="data.selected === 4 || data.selected === 3"
+  class="flex-container colum"
+  *ngIf="data.selected === 4 || data.selected === 3"
   >
+  <mat-divider></mat-divider>
     <div class="flex-container colum" *ngIf="data.selected === 4">
       <h2>Have Done Today's Task?</h2>
       <h3

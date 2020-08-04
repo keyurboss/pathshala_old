@@ -1,28 +1,22 @@
 <div class="main-container" *ngIf="isLoading === false">
   <div class="submitheaderla">
     <h2>Points Submit</h2>
+    <h4>Please Select Any Option</h4>
   </div>
   <div class="submit">
-    <div>
       <mat-radio-group
         aria-labelledby="example-radio-group-label"
         class="example-radio-group"
-        [(ngModel)]="selected"
       >
         <mat-radio-button
           class="example-radio-button"
           *ngFor="let type of types"
+          (click)="submitbuttonClicked(type.id)"
           [value]="type.id"
         >
           {{ type.name }}
         </mat-radio-button>
       </mat-radio-group>
-    </div>
-    <div class="submitPointButton">
-      <button mat-raised-button color="accent" (click)="submitbuttonClicked()">
-        Submit Points
-      </button>
-    </div>
   </div>
   <mat-divider></mat-divider>
   <div class="points-structure-container">
