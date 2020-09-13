@@ -48,7 +48,7 @@ export class BasicFunctionsService {
           .getApiHttp('/islogin', 'get')
           .then((data: any) => {
             if (data.success === 1) {
-              resolve();
+              resolve('');
             } else {
               reject();
             }
@@ -125,7 +125,7 @@ export class BasicFunctionsService {
             localStorage.setItem('refreshToken', data.data.refreshToken);
             delete data.data.refreshToken;
             localStorage.setItem('user', JSON.stringify(data.data));
-            resolve();
+            resolve('');
           } else {
             reject();
           }
